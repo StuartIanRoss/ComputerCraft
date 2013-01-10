@@ -14,6 +14,91 @@ function findTree(vecFromHome)
 	end
 end
 
+function mineTree()
+	turtle.select(1)
+	if(!turtle.compare()) then return false end
+	
+	// Move into the trunk column
+	turtle.dig()
+	turtle.forward()
+	turtle.digdown()
+	
+	-- Move to the top of the tree
+	for i = 0, 7 , 1 do
+		turtle.digup()
+		turtle.up()
+	end
+	
+	-- Mine each layer down
+	for layer = 0, 7, 1 do
+		-- Move to the outer column of leaves
+		if turtle.detect() then turtle.dig() end
+		turtle.forward()
+		if turtle.detect() then turtle.dig() end
+		turtle.forward()
+		
+		-- Dig the outer layer
+		turtle.turnLeft()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		for s = 0, 3, 1 do
+			turtle.turnLeft()
+			for(col = 0, 3, 1 do
+				turtle.dig()
+				turtle.suck()
+				turtle.forward()
+			end
+		end
+		turtle.turnLeft()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		
+		-- Dig the inner layer
+		turtle.turnLeft()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		for s = 0, 3, 1 do
+			turtle.turnLeft()
+			for(col = 0, 3, 1 do
+				turtle.dig()
+				turtle.suck()
+				turtle.forward()
+			end
+		end
+		turtle.turnLeft()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+		
+		-- Move back to the middle
+		turtle.turnLeft()
+		turtle.forward()
+		turtle.turnLeft()
+		turtle.turnLeft()
+		
+		-- Move down to the next layers
+		turtle.down()
+	end
+	
+	turtle.select(2)
+	turtle.placeDown()
+end
+
 function returnHome(vecFromHome)
 	print('X from home is ' .. vecFromHome.x)
 	print('Z from home is ' .. vecFromHome.z)
