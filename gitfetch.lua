@@ -16,7 +16,6 @@ function printUsage()
 	print(' from the default repo and store with the name <target name>')
 end
 
-
 function main(args)
 	urlRoot = 'https://raw.github.com'
 	user = 'StuartIanRoss' -- Default
@@ -28,10 +27,10 @@ function main(args)
 	
 	filename = args[1]
 
-	url = buildUrl(urlRoot, user, repo, args[0])
+	url = buildUrl(urlRoot, user, repo, filename)
 	if #args == 1 then
 		fetchFile( url, filename )
-	else if #args == 2 then
+	elseif #args == 2 then
 		fetchFile( url, args[2] )
 	end
 end
