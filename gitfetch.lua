@@ -28,7 +28,7 @@ function main(args)
 	
 	filename = args[1]
 
-	url = buildUrl(urlRoot, user, repo, args[0]
+	url = buildUrl(urlRoot, user, repo, args[0])
 	if #args == 1 then
 		fetchFile( url, filename )
 	else if #args == 2 then
