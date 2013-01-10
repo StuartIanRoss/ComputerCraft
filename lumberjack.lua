@@ -49,7 +49,7 @@ function mineTree()
 		turtle.forward()
 		for s = 0, 3, 1 do
 			turtle.turnLeft()
-			for col = 0, 3, 1 do
+			for col = 0, 4, 1 do
 				turtle.dig()
 				turtle.suck()
 				turtle.forward()
@@ -73,7 +73,7 @@ function mineTree()
 		turtle.forward()
 		for s = 0, 3, 1 do
 			turtle.turnLeft()
-			for col = 0, 3, 1 do
+			for col = 0, 4, 1 do
 				turtle.dig()
 				turtle.suck()
 				turtle.forward()
