@@ -26,13 +26,13 @@ function mineTree()
 	turtle.digDown()
 	
 	-- Move to the top of the tree
-	for i = 0, 7 , 1 do
+	for i = 0, 5 , 1 do
 		turtle.digUp()
 		turtle.up()
 	end
 	
 	-- Mine each layer down
-	for layer = 0, 7, 1 do
+	for layer = 0, 5, 1 do
 		-- Move to the outer column of leaves
 		if turtle.detect() then turtle.dig() end
 		turtle.forward()
