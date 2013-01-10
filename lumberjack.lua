@@ -16,9 +16,11 @@ end
 
 function mineTree()
 	turtle.select(1)
-	if(!turtle.compare()) then return false end
+	if(not turtle.compare()) then
+		return false
+	end
 	
-	// Move into the trunk column
+	-- Move into the trunk column
 	turtle.dig()
 	turtle.forward()
 	turtle.digdown()
@@ -47,7 +49,7 @@ function mineTree()
 		turtle.forward()
 		for s = 0, 3, 1 do
 			turtle.turnLeft()
-			for(col = 0, 3, 1 do
+			for col = 0, 3, 1 do
 				turtle.dig()
 				turtle.suck()
 				turtle.forward()
@@ -71,7 +73,7 @@ function mineTree()
 		turtle.forward()
 		for s = 0, 3, 1 do
 			turtle.turnLeft()
-			for(col = 0, 3, 1 do
+			for col = 0, 3, 1 do
 				turtle.dig()
 				turtle.suck()
 				turtle.forward()
@@ -123,11 +125,14 @@ function returnHome(vecFromHome)
 		turtle.forward()
 		vecFromHome.x = vecFromHome.x - 1
 	end
+	turtle.turnLeft()
+	turtle.turnLeft()
 end
 
 vecFromHome = { x = 0, y = 0, z = 0 }
 
 if( findTree(vecFromHome) ) then
+	mineTree()
 	print('Found tree')
 end
 
