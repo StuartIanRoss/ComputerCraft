@@ -5,7 +5,7 @@ function fetchFile(url, filename)
 end
 
 function buildUrl(root, user, repo, filename)
-	return root .. '/' .. user .. '/' repo .. '/master/' .. filename .. '.lua' 
+	return root .. '/' .. user .. '/' .. repo .. '/master/' .. filename .. '.lua' 
 end
 
 function printUsage()
