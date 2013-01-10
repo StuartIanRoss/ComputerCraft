@@ -10,7 +10,7 @@ end
 
 function printUsage()
 	print('Usage:')
-	print('gitfetch <name of file> : will fetch <name of file>.lua from the default"
+	print('gitfetch <name of file> : will fetch <name of file>.lua from the default')
 	print(' repo and store with that name')
 	print('gitfetch <name of file> <target name> : will fetch <name of file>.lua')
 	print(' from the default repo and store with the name <target name>')
