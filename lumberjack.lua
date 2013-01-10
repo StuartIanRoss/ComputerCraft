@@ -23,11 +23,11 @@ function mineTree()
 	-- Move into the trunk column
 	turtle.dig()
 	turtle.forward()
-	turtle.digdown()
+	turtle.digDown()
 	
 	-- Move to the top of the tree
 	for i = 0, 7 , 1 do
-		turtle.digup()
+		turtle.digUp()
 		turtle.up()
 	end
 	
