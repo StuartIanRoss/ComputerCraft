@@ -19,7 +19,7 @@ function returnHome(vecFromHome)
 	print('Z from home is ' .. vecFromHome.z)
 	print('Y from home is ' .. vecFromHome.y)
 	
-	if(vecFromHome.x < 0)
+	if(vecFromHome.x < 0) then
 		turtle.turnLeft()
 	else
 		turtle.turnRight()
@@ -29,7 +29,7 @@ function returnHome(vecFromHome)
 		vecFromHome.x = vecFromHome.x - 1
 	end
 	
-	if(vecFromHome.z < 0)
+	if(vecFromHome.z < 0) then
 		turtle.turnLeft()
 	else
 		turtle.turnRight()
