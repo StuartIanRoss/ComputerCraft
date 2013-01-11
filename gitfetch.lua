@@ -17,17 +17,17 @@ function printUsage()
 end
 
 function main(args)
-	urlRoot = 'https://raw.github.com'
-	user = 'StuartIanRoss' -- Default
-	repo = 'ComputerCraft' -- Default
+	local urlRoot = 'https://raw.github.com'
+	local user = 'StuartIanRoss' -- Default
+	local repo = 'ComputerCraft' -- Default
 	if #args == 0 or #args > 2 then
 		printUsage()
 		return
 	end
 	
-	filename = args[1]
+	local filename = args[1]
 
-	url = buildUrl(urlRoot, user, repo, filename)
+	local url = buildUrl(urlRoot, user, repo, filename)
 	if #args == 1 then
 		fetchFile( url, filename )
 	elseif #args == 2 then
@@ -35,5 +35,5 @@ function main(args)
 	end
 end
 
-args = {...}
+local args = {...}
 main(args)
