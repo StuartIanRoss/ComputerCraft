@@ -14,6 +14,15 @@ function findTree(vecFromHome)
 	end
 end
 
+function chopForward(count)
+	if(count == nil) count = 1
+	for(local i = 1, count, 1) do
+		turtle.dig()
+		turtle.suck()
+		turtle.forward()
+	end
+end
+
 function mineTree()
 	turtle.select(1)
 	if(not turtle.compare()) then
@@ -26,66 +35,39 @@ function mineTree()
 	turtle.digDown()
 	
 	-- Move to the top of the tree
-	for i = 0, 5 , 1 do
+	for i = 1, 5 , 1 do
 		turtle.digUp()
 		turtle.up()
 	end
 	
 	-- Mine each layer down
-	for layer = 0, 5, 1 do
+	for layer = 1, 5, 1 do
 		-- Move to the outer column of leaves
-		if turtle.detect() then turtle.dig() end
-		turtle.forward()
-		if turtle.detect() then turtle.dig() end
-		turtle.forward()
+		chopForward(2)
 		
 		-- Dig the outer layer
 		turtle.turnLeft()
-		turtle.dig()
-		turtle.suck()
-		turtle.forward()
-		turtle.dig()
-		turtle.suck()
-		turtle.forward()
-		for s = 0, 3, 1 do
+		chopForward(2)
+		for s = 1, 3, 1 do
 			turtle.turnLeft()
-			for col = 0, 4, 1 do
-				turtle.dig()
-				turtle.suck()
-				turtle.forward()
-			end
+			chopForward(4)
 		end
 		turtle.turnLeft()
-		turtle.dig()
-		turtle.suck()
+		chopForward(2)
+		
+		-- Move to the inner layer
+		turtle.turnLeft()
 		turtle.forward()
-		turtle.dig()
-		turtle.suck()
-		turtle.forward()
+		turtle.turnRight()
 		
 		-- Dig the inner layer
-		turtle.turnLeft()
-		turtle.dig()
-		turtle.suck()
-		turtle.forward()
-		turtle.dig()
-		turtle.suck()
-		turtle.forward()
-		for s = 0, 3, 1 do
+		chopForward()
+		for s = 1, 3, 1 do
 			turtle.turnLeft()
-			for col = 0, 4, 1 do
-				turtle.dig()
-				turtle.suck()
-				turtle.forward()
-			end
+			chopForward(2)
 		end
 		turtle.turnLeft()
-		turtle.dig()
-		turtle.suck()
-		turtle.forward()
-		turtle.dig()
-		turtle.suck()
-		turtle.forward()
+		chopForward()
 		
 		-- Move back to the middle
 		turtle.turnLeft()
