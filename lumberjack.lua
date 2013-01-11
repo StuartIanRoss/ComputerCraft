@@ -32,7 +32,7 @@ function chopForward(count)
 	end
 end
 
-function mineTree()
+function mineTree(vecFromHome)
 	turtle.select(1)
 	if not turtle.compare() then
 		return false
@@ -41,6 +41,7 @@ function mineTree()
 	-- Move into the trunk column
 	turtle.dig()
 	turtle.forward()
+	vecFromHome.x = vecFromHome.x + 1
 	turtle.digDown()
 	
 	-- Move to the top of the tree
@@ -141,16 +142,18 @@ function emptyToChest()
 		return false
 	end
 	
+	-- Drop remaining wood blocks
 	if not dropAllLike(1,4) then
 		return false
 	end
 	
-	slotCount = turtle.getItemCount(2)
-	turtle.select(2)
-	if not turtle.dropDown(slowCount - 1) then
-		return false
-	end
+	--slotCount = turtle.getItemCount(2)
+	--turtle.select(2)
+	--if not turtle.dropDown(slotCount - 1) then
+	--	return false
+	--end
 	
+	-- Drop saplings not in main slot
 	if not dropAllLike(2,4) then
 		return false
 	end
