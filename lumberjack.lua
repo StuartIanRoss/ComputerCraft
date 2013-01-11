@@ -168,7 +168,7 @@ repeat
 	-- While we have saplings
 	while turtle.getItemCount(2) > 1 do
 		if( findTree(vecFromHome) ) then
-			mineTree()
+			mineTree(vecFromHome)
 		end
 
 		returnHome(vecFromHome)
