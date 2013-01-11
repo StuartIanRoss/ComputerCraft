@@ -1,22 +1,31 @@
 function findTree(vecFromHome)
 	while true do
-		if( turtle.detect() ) then
+		if turtle.detect()  then
+			-- Wood block
 			turtle.select(1)
-			if (turtle.compare()) then
+			if turtle.compare() then
 				return true
+			end
+			
+			-- Leaf block
+			turtle.select(3)
+			if turtle.compare then
+				turtle.dig()
 			else
 				return false
 			end
-		else
-			turtle.forward()
-			vecFromHome.x = vecFromHome.x + 1
 		end
+		
+		turtle.forward()
+		vecFromHome.x = vecFromHome.x + 1
 	end
 end
 
 function chopForward(count)
-	if(count == nil) count = 1
-	for(local i = 1, count, 1) do
+	if count == nil then
+		count = 1
+	end
+	for i = 1, count, 1 do
 		turtle.dig()
 		turtle.suck()
 		turtle.forward()
@@ -25,7 +34,7 @@ end
 
 function mineTree()
 	turtle.select(1)
-	if(not turtle.compare()) then
+	if not turtle.compare() then
 		return false
 	end
 	
@@ -111,11 +120,58 @@ function returnHome(vecFromHome)
 	turtle.turnLeft()
 end
 
-vecFromHome = { x = 0, y = 0, z = 0 }
-
-if( findTree(vecFromHome) ) then
-	mineTree()
-	print('Found tree')
+function dropAllLike(sourceSlot, startSlot)
+	for i = startSlot , 16, 1 do
+		turtle.select(i)
+		if turtle.compareTo(sourceSlot) then
+			if not turtle.dropDown() then
+				return false
+			end
+		end
+	end
+	
+	return true
 end
 
-returnHome(vecFromHome)
+function emptyToChest()
+	local slotCount = turtle.getItemCount(1)
+	
+	turtle.select(1)
+	if not turtle.dropDown(slotCount - 1) then
+		return false
+	end
+	
+	if not dropAllLike(1,4) then
+		return false
+	end
+	
+	slotCount = turtle.getItemCount(2)
+	turtle.select(2)
+	if not turtle.dropDown(slowCount - 1) then
+		return false
+	end
+	
+	if not dropAllLike(2,4) then
+		return false
+	end
+	
+	return true
+end
+
+vecFromHome = { x = 0, y = 0, z = 0 }
+
+repeat
+
+	-- While we have saplings
+	while turtle.getItemCount(2) > 1 do
+		if( findTree(vecFromHome) ) then
+			mineTree()
+		end
+
+		returnHome(vecFromHome)
+		while not emptyToChest() do
+			print('Chest is full')
+		end
+	end
+	print('No saplings in slot 2')
+until true
