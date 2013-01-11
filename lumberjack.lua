@@ -9,7 +9,7 @@ function findTree(vecFromHome)
 			
 			-- Leaf block
 			turtle.select(3)
-			if turtle.compare then
+			if turtle.compare() then
 				turtle.dig()
 			else
 				return false
