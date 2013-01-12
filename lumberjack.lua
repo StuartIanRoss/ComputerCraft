@@ -190,10 +190,10 @@ end
 
 -- Based on starting at a corner, facing forwards, with the inside of the ring to the left
 function lumberjack:digRing(diameter, up, down)
-	print('Digging line with diameter ' .. diameter)
+	print('Digging ring with diameter ' .. diameter)
 	for edge = 1, 4, 1 do
-		self:digLine(diameter-1)
-		turtle.turnLeft()
+		self:digLine(diameter-1, up, down)
+		self:turnLeft()
 	end
 end
 
