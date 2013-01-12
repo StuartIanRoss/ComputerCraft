@@ -32,7 +32,7 @@ function lumberjack:setAtOrigin()
 end
 
 function lumberjack:printPos()
-	print('Current pos is (' .. self:getXPos() .. ',' .. self:getYPos() .. ',' .. self:getZPos() .. ')'
+	print('Current pos is (' .. self:getXPos() .. ',' .. self:getYPos() .. ',' .. self:getZPos() .. ')')
 end
 
 -- Wrapper functions around movement to store position
@@ -243,7 +243,7 @@ function lumberjack:mineTree()
 	end
 	
 	-- Mine each layer down
-	while self:getY() > 1 do
+	while self:getYPos() > 1 do
 		-- Move to the outer column of leaves
 		self:chopForward(2)
 		self:turnLeft()
@@ -261,9 +261,9 @@ function lumberjack:mineTree()
 		self:back()
 		
 		-- Move down to the next layers
-		if self:getY() > 0 then self:down() end
-		if self:getY() > 0 then self:down() end
-		if self:getY() > 0 then self:down() end
+		if self:getYPos() > 0 then self:down() end
+		if self:getYPos() > 0 then self:down() end
+		if self:getYPos() > 0 then self:down() end
 	end
 	
 	-- Move to the outer column of leaves
@@ -382,7 +382,7 @@ function lumberjack:run()
 
 			self:returnHome()
 			
-			if not self:isAtHome()
+			if not self:isAtHome() then
 				print('Failed to make it home!')
 				self:printPos()
 				return false
