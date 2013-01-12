@@ -1,38 +1,104 @@
-function findTree(vecFromHome)
+lumberjack = {x = 0, y = 0, z = 0, rot = 0}
+
+-- Wrapper functions around movement to store position
+function lumberjack:forward()
+	turtle.forward()
+	
+	self.updatePos(1)
+end
+
+function lumberjack:back()
+	turtle.back()
+	
+	self.updatePos(-1)
+end
+
+function lumberjack:up()
+	turtle.up()
+	
+	self.y = self.y + 1
+end
+
+function lumberjack:down()
+	turtle.down()
+	
+	self.y = self.y - 1
+end
+
+function lumberjack:turnLeft()
+	turtle.turnLeft()
+	
+	self.rot = self.rot - 1
+	if self.rot < 1 then
+		self.rot = 4
+	end
+end
+
+function lumberjack:turnRight()
+	turtle.turnRight()
+	
+	self.rot = self.rot + 1
+	if self.rot > 4 then
+		self.rot = 1
+	end
+end
+
+function lumberjack:setRot(newRot)
+	while not self.rot == newRot do
+		turnLeft()
+	end
+end
+
+function lumberjack:updatePos(distance)
+	if self.rot == 1
+		self.x = self.x + distance
+	elseif self.rot == 2
+		self.z = self.z + distance
+	elseif self.rot == 3
+		self.x = self.x - distance
+	elseif self.rot == 4
+		self.z = self.z - distance
+	end
+end
+
+function lumberjack:findTree()
 	while true do
-		if turtle.detect()  then
+		if turtle.detect() then
+		
+			return false
+			
+			
 			-- Wood block
 			turtle.select(1)
 			if turtle.compare() then
 				return true
 			end
 			
-			-- Leaf block
+			-- Stone wall block
 			turtle.select(3)
 			if turtle.compare() then
-				turtle.dig()
-			else
 				return false
+			else
+				turtle.dig()
 			end
 		end
 		
-		turtle.forward()
-		vecFromHome.x = vecFromHome.x + 1
+		forward()
 	end
 end
 
-function chopForward(count)
+function lumberjack:chopForward(count)
 	if count == nil then
 		count = 1
 	end
 	for i = 1, count, 1 do
 		turtle.dig()
 		turtle.suck()
-		turtle.forward()
+		forward()
 	end
 end
 
-function mineTree(vecFromHome)
+function lumberjack:mineTree()
 	turtle.select(1)
 	if not turtle.compare() then
 		return false
@@ -40,14 +106,13 @@ function mineTree(vecFromHome)
 	
 	-- Move into the trunk column
 	turtle.dig()
-	turtle.forward()
-	vecFromHome.x = vecFromHome.x + 1
+	forward()
 	turtle.digDown()
 	
 	-- Move to the top of the tree
 	for i = 1, 5 , 1 do
 		turtle.digUp()
-		turtle.up()
+		up()
 	end
 	
 	-- Mine each layer down
@@ -56,72 +121,69 @@ function mineTree(vecFromHome)
 		chopForward(2)
 		
 		-- Dig the outer layer
-		turtle.turnLeft()
+		turnLeft()
 		chopForward(2)
 		for s = 1, 3, 1 do
-			turtle.turnLeft()
+			turnLeft()
 			chopForward(4)
 		end
-		turtle.turnLeft()
+		turnLeft()
 		chopForward(2)
 		
 		-- Move to the inner layer
-		turtle.turnLeft()
-		turtle.forward()
-		turtle.turnRight()
+		turnLeft()
+		forward()
+		turnRight()
 		
 		-- Dig the inner layer
 		chopForward()
 		for s = 1, 3, 1 do
-			turtle.turnLeft()
+			turnLeft()
 			chopForward(2)
 		end
-		turtle.turnLeft()
+		turnLeft()
 		chopForward()
 		
 		-- Move back to the middle
-		turtle.turnLeft()
-		turtle.forward()
-		turtle.turnLeft()
-		turtle.turnLeft()
+		turnLeft()
+		forward()
+		turnLeft()
+		turnLeft()
 		
 		-- Move down to the next layers
-		turtle.down()
+		down()
 	end
 	
 	turtle.select(2)
 	turtle.placeDown()
 end
 
-function returnHome(vecFromHome)
-	print('X from home is ' .. vecFromHome.x)
-	print('Z from home is ' .. vecFromHome.z)
-	print('Y from home is ' .. vecFromHome.y)
-	
-	if(vecFromHome.z < 0) then
-		turtle.turnLeft()
+function lumberjack:returnHome()
+	print('X from home is ' .. self.x)
+	print('Z from home is ' .. self.z)
+	print('Y from home is ' .. self.y)
+
+	if(self.z < 0) then
+		setRot(2)
 	else
-		turtle.turnRight()
+		setRot(4)
 	end
-	while(vecFromHome.z > 0) do
-		turtle.forward()
-		vecFromHome.z = vecFromHome.z - 1
+	while(self.z > 0) do
+		forward()
 	end
 	
-	if(vecFromHome.x < 0) then
-		turtle.turnLeft()
+	if(self.x < 0) then
+		setRot(1)
 	else
-		turtle.turnRight()
+		setRot(3)
 	end
-	while(vecFromHome.x > 0) do
-		turtle.forward()
-		vecFromHome.x = vecFromHome.x - 1
+	while(self.x > 0) do
+		forward()
 	end
-	turtle.turnLeft()
-	turtle.turnLeft()
+	setRot(1)
 end
 
-function dropAllLike(sourceSlot, startSlot)
+function lumberjack:dropAllLike(sourceSlot, startSlot)
 	for i = startSlot , 16, 1 do
 		turtle.select(i)
 		if turtle.compareTo(sourceSlot) then
@@ -134,7 +196,7 @@ function dropAllLike(sourceSlot, startSlot)
 	return true
 end
 
-function emptyToChest()
+function lumberjack:emptyToChest()
 	local slotCount = turtle.getItemCount(1)
 	
 	turtle.select(1)
@@ -161,20 +223,21 @@ function emptyToChest()
 	return true
 end
 
-vecFromHome = { x = 0, y = 0, z = 0 }
+function lumberjack:run()
+	repeat
+		-- While we have saplings
+		while turtle.getItemCount(2) > 1 do
+			if findTree() then
+				mineTree()
+			end
 
-repeat
-
-	-- While we have saplings
-	while turtle.getItemCount(2) > 1 do
-		if( findTree(vecFromHome) ) then
-			mineTree(vecFromHome)
+			returnHome()
+			while not emptyToChest() do
+				print('Chest is full')
+			end
 		end
+		print('No saplings in slot 2')
+	until true -- Should be false to run infinitely
+end
 
-		returnHome(vecFromHome)
-		while not emptyToChest() do
-			print('Chest is full')
-		end
-	end
-	print('No saplings in slot 2')
-until true
+lumberjack:run()
