@@ -60,7 +60,7 @@ function lumberjack:turnRight()
 end
 
 function lumberjack:setRot(newRot)
-	while not self.rot == newRot do
+	while self.rot ~= newRot do
 		self:turnLeft()
 	end
 end
