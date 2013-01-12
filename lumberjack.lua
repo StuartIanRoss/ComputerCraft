@@ -171,7 +171,7 @@ function lumberjack:digLine(length, up, down)
 			turtle.digDown()
 			turtle.suckDown()
 		end
-		chopForward(1)
+		self:chopForward(1)
 	end
 	
 	if up then
@@ -293,7 +293,7 @@ end
 
 function lumberjack:hasSpaceFor(slot)
 	local hasSpace = false
-	for i = 0, 16, 1 do
+	for i = 1, 16, 1 do
 		if turtle.getItemCount(i) == 0 then
 			hasSpace = true
 		end
@@ -309,7 +309,7 @@ function lumberjack:hasSpaceFor(slot)
 end
 
 function lumberjack:hasSpaceForWood()
-	return hasSpaceFor(1)
+	return self:hasSpaceFor(1)
 end
 
 function lumberjack:dropAllLike(sourceSlot, startSlot)
