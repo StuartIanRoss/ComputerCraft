@@ -190,7 +190,6 @@ end
 
 -- Based on starting at a corner, facing forwards, with the inside of the ring to the left
 function lumberjack:digRing(diameter, up, down)
-	print('Digging ring with diameter ' .. diameter)
 	for edge = 1, 4, 1 do
 		self:digLine(diameter-1, up, down)
 		self:turnLeft()
@@ -243,6 +242,8 @@ function lumberjack:mineTree()
 	
 	if not self.bFirstTreeSet then
 		firstTreeX = self:getXPos()
+		print('Set firstTreeX to ' .. firstTreeX)
+		self:printPos()
 		self.bFirstTreeSet = true
 	end
 	
@@ -299,6 +300,8 @@ function lumberjack:mineTree()
 end
 
 function lumberjack:goTo(x,y,z)
+	self:printPos()
+	print('Going to (' .. x .. ',' .. y .. ',' .. z .. ')' )
 	if self:getZPos() < 0 then
 		self:setRot(2)
 	else
@@ -318,9 +321,8 @@ function lumberjack:goTo(x,y,z)
 end
 
 function lumberjack:returnHome()
-	print('X from home is ' .. self:getXPos())
-	print('Z from home is ' .. self:getZPos())
-	print('Y from home is ' .. self:getYPos())
+	print('Returning home')
+	self:printPos()
 
 	self:goTo(0,0,0)
 end
@@ -393,6 +395,8 @@ function lumberjack:run()
 			if self.bHasSpace and self.bFirstTreeSet and self:getXPos() ~= self.firstTreeX then
 				-- Could not move forwards so need to move to a new column
 				
+				print('Has space, so will find new trees')
+				
 				-- Move back to the first row
 				self:goTo(self.firstTreeX, 0, self:getZPos())
 				
@@ -400,7 +404,6 @@ function lumberjack:run()
 				
 				self:turnRight()
 			else
-			
 				-- No space left, and can't go forwards, so head home
 				self:returnHome()
 				
