@@ -1,4 +1,4 @@
-local lumberjack = { pos = {x = 0, y = 0, z = 0}, rot = 1}
+local lumberjack = { pos = {x = 0, y = 0, z = 0}, rot = 1, bHasSpace = true}
 
 -- Getter/setter
 function lumberjack:getXPos()
@@ -197,7 +197,7 @@ end
 -- ring on the left. Spirals inwards, then returns to starting position
 function lumberjack:digSpiral(diameter, up, down)
 	local currentDiameter = diameter
-	while currentDiameter > 0 do
+	while currentDiameter > 1 do
 		self:digRing(currentDiameter, up, down)
 		
 		currentDiameter = currentDiameter - 2
@@ -206,7 +206,7 @@ function lumberjack:digSpiral(diameter, up, down)
 			-- Move into the next ring
 			self:forward()
 			self:turnLeft()
-			self:forward()
+			self:digLine(1)
 			self:turnRight()
 		end
 	end
@@ -265,6 +265,8 @@ function lumberjack:mineTree()
 	
 	turtle.select(2)
 	turtle.placeDown()
+	
+	self.bHasSpace = self:hasSpaceForWood()
 end
 
 function lumberjack:goTo(x,y,z)
@@ -352,13 +354,15 @@ function lumberjack:run()
 	repeat
 		-- While we have saplings
 		while turtle.getItemCount(2) > 1 do
-			while self:moveAhead() and self:hasSpaceForWood() do
+			while self:moveAhead() and self.bHasSpace do
 			end
 
 			self:returnHome()
 			while not self:emptyToChest() do
 				print('Chest is full')
 			end
+			
+			self.bHasSpace = true
 		end
 		print('No saplings in slot 2')
 	until true -- Should be false to run infinitely
