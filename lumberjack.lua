@@ -1,4 +1,35 @@
-local lumberjack = {x = 0, y = 0, z = 0, rot = 1}
+local lumberjack = { pos = {x = 0, y = 0, z = 0}, rot = 1}
+
+-- Getter/setter
+function lumberjack:getXPos()
+	return self.pos.x
+end
+
+function lumberjack:setXPos(pos)
+	self.pos.x = pos
+end
+
+function lumberjack:getYPos()
+	return self.pos.y
+end
+
+function lumberjack:setYPos(pos)
+	self.pos.y = pos
+end
+
+function lumberjack:getZPos()
+	return self.pos.z
+end
+
+function lumberjack:setZPos(pos)
+	self.pos.z = pos
+end
+
+function lumberjack:setAtOrigin()
+	self:setXPos(0)
+	self:setYPos(0)
+	self:setZPos(0)
+end
 
 -- Wrapper functions around movement to store position
 function lumberjack:forward()
@@ -23,7 +54,7 @@ end
 
 function lumberjack:up()
 	if turtle.up() then
-		self.y = self.y + 1
+		self:setYPos( self:getYPos() + 1 )
 		
 		return true
 	end
@@ -33,7 +64,7 @@ end
 
 function lumberjack:down()
 	if turtle.down() then
-		self.y = self.y - 1
+		self:setYPos( self:getYPos() - 1 )
 	
 		return true
 	end
@@ -67,16 +98,16 @@ end
 
 function lumberjack:updatePos(distance)
 	if self.rot == 1 then
-		self.x = self.x + distance
+		self:setXPos( self:getXPos() + distance )
 	elseif self.rot == 2 then
-		self.z = self.z + distance
+		self:setZPos( self:getZPos() + distance )
 	elseif self.rot == 3 then
-		self.x = self.x - distance
+		self:setXPos( self:getXPos() - distance )
 	elseif self.rot == 4 then
-		self.z = self.z - distance
+		self:setZPos( self:getZPos() - distance )
 	end
-	print('X is now ' .. self.x)
-	print('Z is now ' .. self.z)
+	print('X is now ' .. self:getXPos())
+	print('Z is now ' .. self:getZPos())
 end
 
 function lumberjack:isTreeAhead()
@@ -127,6 +158,66 @@ function lumberjack:chopForward(count)
 	end
 end
 
+function lumberjack:digLine(length, up, down)
+	if not up then up = false end
+	if not down then down = false end
+	
+	for block = 1, length, 1 do
+		if up then
+			turtle.digUp()
+			turtle.suckUp()
+		end
+		if down then
+			turtle.digDown()
+			turtle.suckDown()
+		end
+		chopForward(1)
+	end
+	
+	if up then
+		turtle.digUp()
+		turtle.suckUp()
+	end
+	if down then
+		turtle.digDown()
+		turtle.suckDown()
+	end
+end
+
+-- Based on starting at a corner, facing forwards, with the inside of the ring to the left
+function lumberjack:digRing(diameter, up, down)
+	for edge = 1, 4, 1 do
+		self:digLine(diameter)
+		turtle.turnLeft()
+	end
+end
+
+-- Based on the start at the outmost corner, facing forwards, with the inside of the
+-- ring on the left. Spirals inwards, then returns to starting position
+function lumberjack:digSpiral(diameter, up, down)
+	local currentDiameter = diameter
+	while currentDiameter > 0 do
+		self:digRing(currentDiameter, up, down)
+		
+		currentDiameter = currentDiameter - 2
+		
+		if currentDiameter > 0 then
+			-- Move into the next ring
+			self:forward()
+			self:turnLeft()
+			self:forward()
+			self:turnRight()
+		end
+	end
+	
+	while currentDiameter < diameter do
+		self:back()
+		self:turnRight()
+		self:forward()
+		self:turnLeft()
+	end
+end
+
 function lumberjack:mineTree()
 	turtle.select(1)
 	if not turtle.compare() then
@@ -148,36 +239,20 @@ function lumberjack:mineTree()
 	for layer = 1, 6, 1 do
 		-- Move to the outer column of leaves
 		self:chopForward(2)
-		
-		-- Dig the outer layer
 		self:turnLeft()
 		self:chopForward(2)
-		for s = 1, 3, 1 do
-			self:turnLeft()
-			self:chopForward(4)
-		end
 		self:turnLeft()
-		self:chopForward(2)
 		
-		-- Move to the inner layer
-		self:turnLeft()
-		self:forward()
-		self:turnRight()
 		
-		-- Dig the inner layer
-		self:chopForward()
-		for s = 1, 3, 1 do
-			self:turnLeft()
-			self:chopForward(2)
-		end
-		self:turnLeft()
-		self:chopForward()
+		self:digSpiral(5,false,false)
 		
 		-- Move back to the middle
-		self:turnLeft()
-		self:forward()
-		self:turnLeft()
-		self:turnLeft()
+		self:turnRight()
+		self:back()
+		self:back()
+		self:turnRight()
+		self:back()
+		self:back()
 		
 		-- Move down to the next layers
 		if layer < 6 then
@@ -189,27 +264,52 @@ function lumberjack:mineTree()
 	turtle.placeDown()
 end
 
-function lumberjack:returnHome()
-	print('X from home is ' .. self.x)
-	print('Z from home is ' .. self.z)
-	print('Y from home is ' .. self.y)
-
-	if self.z < 0 then
+function lumberjack:goTo(x,y,z)
+	if self:getZPos() < 0 then
 		self:setRot(2)
 	else
 		self:setRot(4)
 	end
-	while self.z ~= 0 and self:moveAhead() do
+	while self:getZPos() ~= z and self:moveAhead() do
 	end
 	
-	if self.x < 0 then
+	if self:getXPos() < 0 then
 		self:setRot(1)
 	else
 		self:setRot(3)
 	end
-	while self.x ~= 0 and self:moveAhead() do
+	while self:getXPos() ~= x and self:moveAhead() do
 	end
 	self:setRot(1)
+end
+
+function lumberjack:returnHome()
+	print('X from home is ' .. self:getXPos())
+	print('Z from home is ' .. self:getZPos())
+	print('Y from home is ' .. self:getYPos())
+
+	self:goTo(0,0,0)
+end
+
+function lumberjack:hasSpaceFor(slot)
+	local hasSpace = false
+	for i = 0, 16, 1 do
+		if turtle.getItemCount(i) == 0 then
+			hasSpace = true
+		end
+		
+		turtle.select(i)
+		if turtle.compareTo(slot) then
+			if turtle.getItemSpace(i) > 0 then
+				hasSpace = true
+			end
+		end
+	end
+	return hasSpace
+end
+
+function lumberjack:hasSpaceForWood()
+	return hasSpaceFor(1)
 end
 
 function lumberjack:dropAllLike(sourceSlot, startSlot)
@@ -240,22 +340,6 @@ function lumberjack:emptyToChest()
 		return false
 	end
 	
-	-- Drop remaining wood blocks
-	--if not dropAllLike(1,4) then
-	--	return false
-	--end
-	
-	--slotCount = turtle.getItemCount(2)
-	--turtle.select(2)
-	--if not turtle.dropDown(slotCount - 1) then
-	--	return false
-	--end
-	
-	-- Drop saplings not in main slot
-	--if not dropAllLike(2,4) then
-	--	return false
-	--end
-	
 	self:dropAllFromTo(4,16)
 	
 	return true
@@ -265,7 +349,7 @@ function lumberjack:run()
 	repeat
 		-- While we have saplings
 		while turtle.getItemCount(2) > 1 do
-			while self:moveAhead() do
+			while self:moveAhead() and self:hasSpaceForWood() do
 			end
 
 			self:returnHome()
