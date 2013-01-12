@@ -79,27 +79,41 @@ function lumberjack:updatePos(distance)
 	print('Z is now ' .. self.z)
 end
 
-function lumberjack:findTree()
-	while true do
-		if turtle.detect() then
+function lumberjack:isTreeAhead()
+	-- Wood block
+	turtle.select(1)
+	if turtle.compare() then
+		return true
+	end
+	return false
+end
 
-			-- Wood block
-			turtle.select(1)
-			if turtle.compare() then
-				return true
-			end
-			
-			-- Stone wall block
-			turtle.select(3)
-			if turtle.compare() then
-				return false
-			else
-				turtle.dig()
-			end
+function lumberjack:canDig()
+	-- Stone wall block
+	turtle.select(3)
+	if turtle.compare() then
+		return false
+	else
+		return true
+	end
+end
+
+function lumberjack:moveAhead()
+	local movedAhead = true
+	if turtle.detect() then
+		if self:isTreeAhead() then
+			self:mineTree()
+		elseif self:canDig() then
+			turtle.dig()
+			self:forward()
+		else
+			movedAhead = false
 		end
-		
+	else
 		self:forward()
 	end
+	
+	return movedAhead
 end
 
 function lumberjack:chopForward(count)
@@ -185,8 +199,7 @@ function lumberjack:returnHome()
 	else
 		self:setRot(4)
 	end
-	while self.z ~= 0 do
-		self:forward()
+	while self.z ~= 0 and self:moveAhead() do
 	end
 	
 	if self.x < 0 then
@@ -194,8 +207,7 @@ function lumberjack:returnHome()
 	else
 		self:setRot(3)
 	end
-	while self.x ~= 0 do
-		self:forward()
+	while self.x ~= 0 and self:moveAhead() do
 	end
 	self:setRot(1)
 end
@@ -253,8 +265,7 @@ function lumberjack:run()
 	repeat
 		-- While we have saplings
 		while turtle.getItemCount(2) > 1 do
-			if self:findTree() then
-				self:mineTree()
+			while self:moveAhead() do
 			end
 
 			self:returnHome()
