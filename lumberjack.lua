@@ -31,6 +31,10 @@ function lumberjack:setAtOrigin()
 	self:setZPos(0)
 end
 
+function lumberjack:printPos()
+	print('Current pos is (' .. self:getXPos() .. ',' .. self:getYPos() .. ',' .. self:getZPos() .. ')'
+end
+
 -- Wrapper functions around movement to store position
 function lumberjack:forward()
 	if turtle.forward() then
@@ -239,15 +243,14 @@ function lumberjack:mineTree()
 	end
 	
 	-- Mine each layer down
-	for layer = 1, 6, 1 do
+	while self:getY() > 1 do
 		-- Move to the outer column of leaves
 		self:chopForward(2)
 		self:turnLeft()
 		self:chopForward(2)
 		self:turnLeft()
 		
-		
-		self:digSpiral(5,false,false)
+		self:digSpiral(5,true,true)
 		
 		-- Move back to the middle
 		self:turnRight()
@@ -258,10 +261,26 @@ function lumberjack:mineTree()
 		self:back()
 		
 		-- Move down to the next layers
-		if layer < 6 then
-			self:down()
-		end
+		if self:getY() > 0 then self:down() end
+		if self:getY() > 0 then self:down() end
+		if self:getY() > 0 then self:down() end
 	end
+	
+	-- Move to the outer column of leaves
+	self:chopForward(2)
+	self:turnLeft()
+	self:chopForward(2)
+	self:turnLeft()
+		
+	self:digSpiral(5,false,false)
+	
+	-- Move back to the middle
+	self:turnRight()
+	self:back()
+	self:back()
+	self:turnRight()
+	self:back()
+	self:back()
 	
 	turtle.select(2)
 	turtle.placeDown()
@@ -294,6 +313,10 @@ function lumberjack:returnHome()
 	print('Y from home is ' .. self:getYPos())
 
 	self:goTo(0,0,0)
+end
+
+function lumberjack:isAtHome()
+	return self:getXPos() == 0 and self:getYPos() == 0 and self:getZPos() == 0
 end
 
 function lumberjack:hasSpaceFor(slot)
@@ -358,6 +381,13 @@ function lumberjack:run()
 			end
 
 			self:returnHome()
+			
+			if not self:isAtHome()
+				print('Failed to make it home!')
+				self:printPos()
+				return false
+			end
+			
 			while not self:emptyToChest() do
 				print('Chest is full')
 			end
