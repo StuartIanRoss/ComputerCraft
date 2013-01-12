@@ -4,13 +4,13 @@ lumberjack = {x = 0, y = 0, z = 0, rot = 0}
 function lumberjack:forward()
 	turtle.forward()
 	
-	self.updatePos(1)
+	self:updatePos(1)
 end
 
 function lumberjack:back()
 	turtle.back()
 	
-	self.updatePos(-1)
+	self:updatePos(-1)
 end
 
 function lumberjack:up()
@@ -45,18 +45,18 @@ end
 
 function lumberjack:setRot(newRot)
 	while not self.rot == newRot do
-		turnLeft()
+		self:turnLeft()
 	end
 end
 
 function lumberjack:updatePos(distance)
-	if self.rot == 1
+	if self.rot == 1 then
 		self.x = self.x + distance
-	elseif self.rot == 2
+	elseif self.rot == 2 then
 		self.z = self.z + distance
-	elseif self.rot == 3
+	elseif self.rot == 3 then
 		self.x = self.x - distance
-	elseif self.rot == 4
+	elseif self.rot == 4 then
 		self.z = self.z - distance
 	end
 end
@@ -64,10 +64,7 @@ end
 function lumberjack:findTree()
 	while true do
 		if turtle.detect() then
-		
-			return false
-			
-			
+
 			-- Wood block
 			turtle.select(1)
 			if turtle.compare() then
@@ -83,7 +80,7 @@ function lumberjack:findTree()
 			end
 		end
 		
-		forward()
+		self:forward()
 	end
 end
 
@@ -94,7 +91,7 @@ function lumberjack:chopForward(count)
 	for i = 1, count, 1 do
 		turtle.dig()
 		turtle.suck()
-		forward()
+		self:forward()
 	end
 end
 
@@ -106,13 +103,13 @@ function lumberjack:mineTree()
 	
 	-- Move into the trunk column
 	turtle.dig()
-	forward()
+	self:forward()
 	turtle.digDown()
 	
 	-- Move to the top of the tree
 	for i = 1, 5 , 1 do
 		turtle.digUp()
-		up()
+		self:up()
 	end
 	
 	-- Mine each layer down
@@ -121,37 +118,37 @@ function lumberjack:mineTree()
 		chopForward(2)
 		
 		-- Dig the outer layer
-		turnLeft()
+		self:turnLeft()
 		chopForward(2)
 		for s = 1, 3, 1 do
-			turnLeft()
+			self:turnLeft()
 			chopForward(4)
 		end
-		turnLeft()
+		self:turnLeft()
 		chopForward(2)
 		
 		-- Move to the inner layer
-		turnLeft()
-		forward()
-		turnRight()
+		self:turnLeft()
+		self:forward()
+		self:turnRight()
 		
 		-- Dig the inner layer
 		chopForward()
 		for s = 1, 3, 1 do
-			turnLeft()
+			self:turnLeft()
 			chopForward(2)
 		end
-		turnLeft()
+		self:turnLeft()
 		chopForward()
 		
 		-- Move back to the middle
-		turnLeft()
-		forward()
-		turnLeft()
-		turnLeft()
+		self:turnLeft()
+		self:forward()
+		self:turnLeft()
+		self:turnLeft()
 		
 		-- Move down to the next layers
-		down()
+		self:down()
 	end
 	
 	turtle.select(2)
@@ -164,23 +161,23 @@ function lumberjack:returnHome()
 	print('Y from home is ' .. self.y)
 
 	if(self.z < 0) then
-		setRot(2)
+		self:setRot(2)
 	else
-		setRot(4)
+		self:setRot(4)
 	end
 	while(self.z > 0) do
-		forward()
+		self:forward()
 	end
 	
 	if(self.x < 0) then
-		setRot(1)
+		self:setRot(1)
 	else
-		setRot(3)
+		self:setRot(3)
 	end
 	while(self.x > 0) do
-		forward()
+		self:forward()
 	end
-	setRot(1)
+	self:setRot(1)
 end
 
 function lumberjack:dropAllLike(sourceSlot, startSlot)
