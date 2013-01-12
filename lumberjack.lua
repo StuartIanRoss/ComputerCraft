@@ -1,4 +1,4 @@
-lumberjack = {x = 0, y = 0, z = 0, rot = 0}
+local lumberjack = {x = 0, y = 0, z = 0, rot = 1}
 
 -- Wrapper functions around movement to store position
 function lumberjack:forward()
@@ -113,7 +113,7 @@ function lumberjack:mineTree()
 	end
 	
 	-- Mine each layer down
-	for layer = 1, 5, 1 do
+	for layer = 1, 6, 1 do
 		-- Move to the outer column of leaves
 		chopForward(2)
 		
@@ -165,7 +165,7 @@ function lumberjack:returnHome()
 	else
 		self:setRot(4)
 	end
-	while(self.z > 0) do
+	while(self.z != 0) do
 		self:forward()
 	end
 	
@@ -174,7 +174,7 @@ function lumberjack:returnHome()
 	else
 		self:setRot(3)
 	end
-	while(self.x > 0) do
+	while(self.x != 0) do
 		self:forward()
 	end
 	self:setRot(1)
@@ -193,6 +193,13 @@ function lumberjack:dropAllLike(sourceSlot, startSlot)
 	return true
 end
 
+function lumberjack:dropAllFrom(startSlot,endSlot)
+	for i =startSlot, endSlot, 1 do
+		turtle.select(i)
+		turtle.dropDown()
+	end
+end
+
 function lumberjack:emptyToChest()
 	local slotCount = turtle.getItemCount(1)
 	
@@ -202,9 +209,9 @@ function lumberjack:emptyToChest()
 	end
 	
 	-- Drop remaining wood blocks
-	if not dropAllLike(1,4) then
-		return false
-	end
+	--if not dropAllLike(1,4) then
+	--	return false
+	--end
 	
 	--slotCount = turtle.getItemCount(2)
 	--turtle.select(2)
@@ -213,9 +220,11 @@ function lumberjack:emptyToChest()
 	--end
 	
 	-- Drop saplings not in main slot
-	if not dropAllLike(2,4) then
-		return false
-	end
+	--if not dropAllLike(2,4) then
+	--	return false
+	--end
+	
+	self:dropAllFromTo(4,16)
 	
 	return true
 end
@@ -224,12 +233,12 @@ function lumberjack:run()
 	repeat
 		-- While we have saplings
 		while turtle.getItemCount(2) > 1 do
-			if findTree() then
-				mineTree()
+			if self:findTree() then
+				self:mineTree()
 			end
 
-			returnHome()
-			while not emptyToChest() do
+			self:returnHome()
+			while not self:emptyToChest() do
 				print('Chest is full')
 			end
 		end
