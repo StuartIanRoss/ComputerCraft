@@ -2,27 +2,43 @@ local lumberjack = {x = 0, y = 0, z = 0, rot = 1}
 
 -- Wrapper functions around movement to store position
 function lumberjack:forward()
-	turtle.forward()
+	if turtle.forward() then
+		self:updatePos(1)
+		
+		return true
+	end
 	
-	self:updatePos(1)
+	return false
 end
 
 function lumberjack:back()
-	turtle.back()
+	if turtle.back() then
+		self:updatePos(-1)
 	
-	self:updatePos(-1)
+		return true
+	end
+	
+	return false
 end
 
 function lumberjack:up()
-	turtle.up()
+	if turtle.up() then
+		self.y = self.y + 1
+		
+		return true
+	end
 	
-	self.y = self.y + 1
+	return false
 end
 
 function lumberjack:down()
-	turtle.down()
+	if turtle.down() then
+		self.y = self.y - 1
 	
-	self.y = self.y - 1
+		return true
+	end
+	
+	return false
 end
 
 function lumberjack:turnLeft()
@@ -59,6 +75,8 @@ function lumberjack:updatePos(distance)
 	elseif self.rot == 4 then
 		self.z = self.z - distance
 	end
+	print('X is now ' .. x)
+	print('Z is now ' .. z)
 end
 
 function lumberjack:findTree()
@@ -148,7 +166,9 @@ function lumberjack:mineTree()
 		self:turnLeft()
 		
 		-- Move down to the next layers
-		self:down()
+		if layer < 6 then
+			self:down()
+		end
 	end
 	
 	turtle.select(2)
@@ -160,21 +180,21 @@ function lumberjack:returnHome()
 	print('Z from home is ' .. self.z)
 	print('Y from home is ' .. self.y)
 
-	if(self.z < 0) then
+	if self.z < 0 then
 		self:setRot(2)
 	else
 		self:setRot(4)
 	end
-	while(self.z != 0) do
+	while self.z ~= 0) do
 		self:forward()
 	end
 	
-	if(self.x < 0) then
+	if self.x < 0 then
 		self:setRot(1)
 	else
 		self:setRot(3)
 	end
-	while(self.x != 0) do
+	while self.x ~= 0 do
 		self:forward()
 	end
 	self:setRot(1)
@@ -193,7 +213,7 @@ function lumberjack:dropAllLike(sourceSlot, startSlot)
 	return true
 end
 
-function lumberjack:dropAllFrom(startSlot,endSlot)
+function lumberjack:dropAllFromTo(startSlot,endSlot)
 	for i =startSlot, endSlot, 1 do
 		turtle.select(i)
 		turtle.dropDown()
