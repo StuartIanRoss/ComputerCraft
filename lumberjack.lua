@@ -1,4 +1,4 @@
-local lumberjack = { pos = {x = 0, y = 0, z = 0}, rot = 1, bHasSpace = true}
+local lumberjack = { pos = {x = 0, y = 0, z = 0}, rot = 1, bHasSpace = true, firstTreeX = 0, bFirstTreeSet = false}
 
 -- Getter/setter
 function lumberjack:getXPos()
@@ -236,6 +236,15 @@ function lumberjack:mineTree()
 	self:forward()
 	turtle.digDown()
 	
+	-- The first tree on a new column in the same row as the very first tree
+	if self.bFirstTreeSet and self:getXPos() == self.firstTreeX then
+		self:turnLeft()
+	end
+	
+	if not self.bFirstTreeSet then
+		firstTreeX = self:getXPos()
+	end
+	
 	-- Move to the top of the tree
 	for i = 1, 5 , 1 do
 		turtle.digUp()
@@ -380,19 +389,32 @@ function lumberjack:run()
 			while self:moveAhead() and self.bHasSpace do
 			end
 
-			self:returnHome()
+			if self.bHasSpace and self.bFirstTreeSet and self:getXPos() ~= self.firstTreeX then
+				-- Could not move forwards so need to move to a new column
+				
+				-- Move back to the first row
+				self:goTo(self.firstTreeX, 0, self:getZPos())
+				
+				self:setRot(1)
+				
+				self:turnRight()
+			else
 			
-			if not self:isAtHome() then
-				print('Failed to make it home!')
-				self:printPos()
-				return false
+				-- No space left, and can't go forwards, so head home
+				self:returnHome()
+				
+				if not self:isAtHome() then
+					print('Failed to make it home!')
+					self:printPos()
+					return false
+				end
+			
+				while not self:emptyToChest() do
+					print('Chest is full')
+				end
+			
+				self.bHasSpace = true
 			end
-			
-			while not self:emptyToChest() do
-				print('Chest is full')
-			end
-			
-			self.bHasSpace = true
 		end
 		print('No saplings in slot 2')
 	until true -- Should be false to run infinitely
