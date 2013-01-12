@@ -106,8 +106,8 @@ function lumberjack:updatePos(distance)
 	elseif self.rot == 4 then
 		self:setZPos( self:getZPos() - distance )
 	end
-	print('X is now ' .. self:getXPos())
-	print('Z is now ' .. self:getZPos())
+	--print('X is now ' .. self:getXPos())
+	--print('Z is now ' .. self:getZPos())
 end
 
 function lumberjack:isTreeAhead()
@@ -186,8 +186,9 @@ end
 
 -- Based on starting at a corner, facing forwards, with the inside of the ring to the left
 function lumberjack:digRing(diameter, up, down)
+	print('Digging line with diameter ' .. diameter)
 	for edge = 1, 4, 1 do
-		self:digLine(diameter)
+		self:digLine(diameter-1)
 		turtle.turnLeft()
 	end
 end
@@ -215,6 +216,8 @@ function lumberjack:digSpiral(diameter, up, down)
 		self:turnRight()
 		self:forward()
 		self:turnLeft()
+		
+		currentDiameter = currentDiameter + 2
 	end
 end
 
