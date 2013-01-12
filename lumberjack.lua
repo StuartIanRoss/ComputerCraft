@@ -241,8 +241,8 @@ function lumberjack:mineTree()
 	end
 	
 	if not self.bFirstTreeSet then
-		firstTreeX = self:getXPos()
-		print('Set firstTreeX to ' .. firstTreeX)
+		self.firstTreeX = self:getXPos()
+		print('Set firstTreeX to ' .. self.firstTreeX)
 		self:printPos()
 		self.bFirstTreeSet = true
 	end
@@ -400,9 +400,7 @@ function lumberjack:run()
 				-- Move back to the first row
 				self:goTo(self.firstTreeX, 0, self:getZPos())
 				
-				self:setRot(1)
-				
-				self:turnRight()
+				self:setRot(2)
 			else
 				-- No space left, and can't go forwards, so head home
 				self:returnHome()
