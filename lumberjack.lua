@@ -243,6 +243,7 @@ function lumberjack:mineTree()
 	
 	if not self.bFirstTreeSet then
 		firstTreeX = self:getXPos()
+		self.bFirstTreeSet = true
 	end
 	
 	-- Move to the top of the tree
