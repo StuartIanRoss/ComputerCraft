@@ -75,8 +75,8 @@ function lumberjack:updatePos(distance)
 	elseif self.rot == 4 then
 		self.z = self.z - distance
 	end
-	print('X is now ' .. x)
-	print('Z is now ' .. z)
+	print('X is now ' .. self.x)
+	print('Z is now ' .. self.z)
 end
 
 function lumberjack:findTree()
@@ -133,17 +133,17 @@ function lumberjack:mineTree()
 	-- Mine each layer down
 	for layer = 1, 6, 1 do
 		-- Move to the outer column of leaves
-		chopForward(2)
+		self:chopForward(2)
 		
 		-- Dig the outer layer
 		self:turnLeft()
-		chopForward(2)
+		self:chopForward(2)
 		for s = 1, 3, 1 do
 			self:turnLeft()
-			chopForward(4)
+			self:chopForward(4)
 		end
 		self:turnLeft()
-		chopForward(2)
+		self:chopForward(2)
 		
 		-- Move to the inner layer
 		self:turnLeft()
@@ -151,13 +151,13 @@ function lumberjack:mineTree()
 		self:turnRight()
 		
 		-- Dig the inner layer
-		chopForward()
+		self:chopForward()
 		for s = 1, 3, 1 do
 			self:turnLeft()
-			chopForward(2)
+			self:chopForward(2)
 		end
 		self:turnLeft()
-		chopForward()
+		self:chopForward()
 		
 		-- Move back to the middle
 		self:turnLeft()
@@ -185,7 +185,7 @@ function lumberjack:returnHome()
 	else
 		self:setRot(4)
 	end
-	while self.z ~= 0) do
+	while self.z ~= 0 do
 		self:forward()
 	end
 	
