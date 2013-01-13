@@ -139,7 +139,7 @@ function ppt:installPackage(packageName, forceUpdate, dontUpdateDeps)
   
   local packageInfo = self.packageList[packageName]
   if not packageInfo then
-    print('Package ' .. packageInfo .. ' not found in list.')
+    print('Package ' .. packageName .. ' not found in list.')
     return
   end
   
