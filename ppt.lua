@@ -45,7 +45,7 @@ function loadPackageList(force)
   repeat
     local packageLine = handle.readLine()
     if packageLine then
-      local packageInfo = textutils.unserialize(allContents)
+      local packageInfo = textutils.unserialize(packageLine)
       
       if packageInfo.name and packageInfo.repoPath and packageInfo.localPath then
         if not packageList then
