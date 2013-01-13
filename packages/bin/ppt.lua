@@ -146,7 +146,7 @@ function ppt:installPackage(packageName, forceUpdate, dontUpdateDeps)
   if self.packageVersions and self.packageVersions[packageName] then
     print(packageName .. ': Installed version is ' .. self.packageVersions[packageName])
   end
-  print(packageName .. ': Repo version is ' .. self.packageVersions[packageName])
+  print(packageName .. ': Repo version is ' .. packageInfo.ver)
   if not forceUpdate and self.packageVersions and self.packageVersions[packageName] and self.packageVersions[packageName] <= packageInfo.ver then
     print('Package ' .. packageName .. ' is already at the latest version.')
     return
