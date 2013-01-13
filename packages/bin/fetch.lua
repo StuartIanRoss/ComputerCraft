@@ -19,8 +19,14 @@ if src == nil then
 end
 
 f = fs.open(name, "w")
+if f then
 f.write(src.readAll())
 f.close()
+else
+  print("Failed to open target file")
+  src.close()
+  return false
+end
 
 src.close()
 

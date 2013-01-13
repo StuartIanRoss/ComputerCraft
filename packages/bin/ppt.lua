@@ -18,6 +18,12 @@ end
 
 -- Gets the file at remotePath from the default fetch service, and stores it in localPath
 function ppt:getFile(remotePath,localPath)
+  if not fs.exists(localPath) then
+    -- makeDir works recursively, so this creates the target file as a dir, and all
+    -- parent dirs. We then just delete the dir that will become the file.
+    fs.makeDir(localPath)
+    fs.delete(localPath)
+  end
   if shell.run('/bin/gitfetch',remotePath,localPath) then
   elseif shell.run('gitfetch', remotePath,localPath) then
   else
