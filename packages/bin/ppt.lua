@@ -120,13 +120,14 @@ function ppt:updateAllPackages()
   for k,v in pairs(self.packageList) do
     -- Check that this package is installed
     if self.packageVersions[k] then
-      self:installPackage(k, false)
+      self:installPackage(k, false, true)
     end
   end
 end
 
 -- Install or update a package
-function ppt:installPackage(packageName, forceUpdate)
+function ppt:installPackage(packageName, forceUpdate, dontUpdateDeps)
+  dontUpdateDeps = dontUpdateDeps or false
   forceUpdate = forceUpdate or false
   if not forceUpdate and not self.packageVersions then
     self:loadPackageVersions()
@@ -142,12 +143,16 @@ function ppt:installPackage(packageName, forceUpdate)
     return
   end
   
-  if not forceUpdate and self.packageVersions and self.packageVersions[packageName] and self.packageVersions[packageName] < packageInfo.ver then
+  if self.packageVersions and self.packageVersion[packageName] then
+    print(packageName .. ': Installed version is ' .. self.packageVersion[packageName])
+  end
+  print(packageName .. ': Repo version is ' .. self.packageVersion[packageName])
+  if not forceUpdate and self.packageVersions and self.packageVersions[packageName] and self.packageVersions[packageName] <= packageInfo.ver then
     print('Package ' .. packageName .. ' is already at the latest version.')
     return
   end
   
-  if packageInfo.deps then
+  if not dontUpdateDeps and packageInfo.deps then
     print('Installing dependencies for ' .. packageName)
     for i, dep in ipairs(packageInfo.deps) do
       self:installPackage(dep, false)
