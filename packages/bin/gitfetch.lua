@@ -19,7 +19,7 @@ function buildUrl(repoPath, root, user, repo, branch)
   user = user or 'StuartIanRoss'
   repo = repo or 'ComputerCraft'
   branch = branch or 'master'
-  return root .. '/' .. user .. '/' .. repo .. '/' .. branch .. '/' .. filename
+  return root .. '/' .. user .. '/' .. repo .. '/' .. branch .. '/' .. repoPath
 end
 
 function printUsage()

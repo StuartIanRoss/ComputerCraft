@@ -1,3 +1,3 @@
-{["name"]="fetch",["ver"]=1,["repoPath"]="packages/bin/fetch",["localPath"]="/bin/fetch",["desc"]="Fetches a file from a url.",}
-{["name"]="gitfetch",["ver"]=1,["repoPath"]="packages/bin/gitfetch",["localPath"]="/bin/gitfetch",["alias"]="gf",["deps"]={[1]="fetch",},["desc"]="Fetches a file from a github repository.",}
-{["name"]="ppt",["ver"]=1,["repoPath"]="packages/bin/ppt",["localPath"]="/bin/ppt",["alias"]="ppt",["deps"]={[1]="gitfetch",},["desc"]="Allows installing and updating scripts from a remote server.",}
+{["name"]="fetch",["ver"]=1,["repoPath"]="packages/bin/fetch.lua",["localPath"]="/bin/fetch",["desc"]="Fetches a file from a url.",}
+{["name"]="gitfetch",["ver"]=1,["repoPath"]="packages/bin/gitfetch.lua",["localPath"]="/bin/gitfetch",["alias"]="gf",["deps"]={[1]="fetch",},["desc"]="Fetches a file from a github repository.",}
+{["name"]="ppt",["ver"]=1,["repoPath"]="packages/bin/ppt.lua",["localPath"]="/bin/ppt",["alias"]="ppt",["deps"]={[1]="gitfetch",},["desc"]="Allows installing and updating scripts from a remote server.",}
