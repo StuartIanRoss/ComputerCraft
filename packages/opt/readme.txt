@@ -1,0 +1,1 @@
+Scripts with more specific functions (e.g. miner) that are of use to everybody. Scripts placed here should generally be well tested before have so that people can trust that they will work.
