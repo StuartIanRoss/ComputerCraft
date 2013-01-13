@@ -323,6 +323,13 @@ end
 function lumberjack:returnHome()
   print('Returning home')
   self:printPos()
+  
+  if self.bFirstTreeSet then
+    -- Move into a non-tree column
+    self:goTo(self.getXPos(), 0 self:getZPos() - 1)
+    -- Move back to the first row, one closer to home
+    self:goTo(self.firstTreeX - 1, 0, self:getZPos())
+  end
 
   self:goTo(0,0,0)
 end
