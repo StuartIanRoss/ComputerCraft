@@ -4,7 +4,7 @@ function loadRepoSettings()
 end
 
 function fetchFile(url, outputPath)
-  if shell.run('/bin/fetch', url, outputPath then
+  if shell.run('/bin/fetch', url, outputPath) then
   elseif shell.run('fetch', url, outputPath) then
   else
     print('Failed to find fetch, could not download file.')

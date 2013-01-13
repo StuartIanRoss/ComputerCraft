@@ -16,8 +16,8 @@ end
 
 -- Gets the file at remotePath from the default fetch service, and stores it in localPath
 function getFile(remotePath,localPath)
-  if shell.run('/bin/gitfetch',packageName) then
-  elseif shell.run('gitfetch', packageName)
+  if shell.run('/bin/gitfetch',remotePath,localPath) then
+  elseif shell.run('gitfetch', remotePath,localPath) then
   else
     print('Failed to find gitfetch. Could not download file.')
     return false
@@ -110,7 +110,7 @@ function updateAllPackages(packageList, packageVersions)
     print('No packages installed.')
     return
   end
-  for k,v in pairs(packageList)
+  for k,v in pairs(packageList) do
     -- Check that this package is installed
     if packageVersions[k] then
       installPackage(packageList, k, false, packageVersions)
@@ -162,7 +162,7 @@ function installPackage(packageList, packageName, forceUpdate, packageVersions)
 	end
 	if packageInfo.alias then
 	  shell.setAlias(packageInfo.alias, packageInfo.localPath)
-	  print('Set ' .. packageInfo.alias .. ' as alias for ' .. packageInfo.name
+	  print('Set ' .. packageInfo.alias .. ' as alias for ' .. packageInfo.name)
 	end
 end
 
