@@ -5,7 +5,9 @@
 
 local args = {...}
 
-function printUsage()
+local ppt = {}
+
+function ppt:printUsage()
 	print('USAGE:')
 	print(' ppt get <package name> - Forces download and install of <package name>')
 	print(' ppt upgrade - Upgrades all packages that are currently out of date')
@@ -15,7 +17,7 @@ function printUsage()
 end
 
 -- Gets the file at remotePath from the default fetch service, and stores it in localPath
-function getFile(remotePath,localPath)
+function ppt:getFile(remotePath,localPath)
   if shell.run('/bin/gitfetch',remotePath,localPath) then
   elseif shell.run('gitfetch', remotePath,localPath) then
   else
@@ -26,10 +28,11 @@ function getFile(remotePath,localPath)
   return true
 end
 
-function updatePackageList(force)
+-- Gets and stores the list of packages available from the server
+function ppt:updatePackageList(force)
   force = force or false
   if force or not fs.exists('/etc/_pptpackages') then
-    if getFile('_pptpackages', '/etc/_pptpackages') then
+    if self:getFile('_pptpackages', '/etc/_pptpackages') then
       print('Updated package list from server')
     else
       print('Could not update package list from server.')
@@ -37,8 +40,9 @@ function updatePackageList(force)
   end
 end
 
-function loadPackageList(force)
-  updatePackageList(false)
+-- Loads and parses the list of packages available
+function ppt:loadPackageList(force)
+  self:updatePackageList(false)
   local handle = fs.open('/etc/_pptpackages','r')
   local packageList = nil
   
@@ -48,93 +52,97 @@ function loadPackageList(force)
       local packageInfo = textutils.unserialize(packageLine)
       
       if packageInfo.name and packageInfo.repoPath and packageInfo.localPath then
-        if not packageList then
-          packageList = {}
+        if not self.packageList then
+          self.packageList = {}
         end
-        packageList[packageInfo.name] = packageInfo
+        self.packageList[packageInfo.name] = packageInfo
       end
     end
   until not packageLine
   
   handle.close()
-  
-  return packageList
 end
 
-function printPackages(packageList)
-  if not packageList then
+-- Prints a list of packages that can be installed
+function ppt:printPackages()
+  if not self.packageList then
     print('No packages found!')
     return
   end
   
-  for k, v in pairs(packageList) do
+  for k, v in pairs(self.packageList) do
     if(v.desc) then
       print(k .. ' - ' .. v.desc)
     else
       print(k)
     end
   end
-  print(#packageList .. ' total packages')
+  print(#self.packageList .. ' total packages')
 end
 
-function loadPackageVersions()
-  local packageVersions = nil
-  
+-- Loads the file storing versions of installed packages
+function ppt:loadPackageVersions()
   local handle = fs.open('/etc/_pptversions','r')
   if handle then
-    packageVersions = textutils.unserialize( handle.readLine() )
+    local line = handle.readLine()
+    if line then self.packageVersions = textutils.unserialize( line ) end
     handle.close()
   end
-  
-  return packageVersions
 end
 
-function recordPackageVersion(packageName, newVersion)
-  local packageVersions = loadPackageVersions()
-  
-  packageVersions = packageVersions or {}
-  
-  packageVersions[packageName] = newVersion
-  
+-- Update the installed version of a package
+function ppt:recordPackageVersion(packageName, newVersion)
+  self.packageVersions = self.packageVersions or {}
+  self.packageVersions[packageName] = newVersion
+end
+
+-- Output the file storing versions of installed packages
+function ppt:savePackageVersions()
+  if not self.packageVersions then
+    print('Not saving versions. No packages installed')
+    return
+  end
   local handle = fs.open('/etc/_pptversions','w')
   if handle then
-    handle.writeLine( textutils.serialize( packageVersions ) )
+    handle.writeLine( textutils.serialize( self.packageVersions ) )
+    handle.close()
   else
-    print('Failed to open versions file to update version')
+    print('Failed to save package versions')
   end
 end
 
-function updateAllPackages(packageList, packageVersions)
-  packageVersions = packageVersions or loadPackageVersions()
-  if not packageVersions then
+-- Update all installed packages if required
+function ppt:updateAllPackages()
+  if not self.packageVersions then
     print('No packages installed.')
     return
   end
-  for k,v in pairs(packageList) do
+  for k,v in pairs(self.packageList) do
     -- Check that this package is installed
-    if packageVersions[k] then
-      installPackage(packageList, k, false, packageVersions)
+    if self.packageVersions[k] then
+      self:installPackage(k, false)
     end
   end
 end
 
-function installPackage(packageList, packageName, forceUpdate, packageVersions)
+-- Install or update a package
+function ppt:installPackage(packageName, forceUpdate)
   forceUpdate = forceUpdate or false
-  if not forceUpdate and not packageVersions then
-    packageVersions = loadPackageVersion()
+  if not forceUpdate and not self.packageVersions then
+    self:loadPackageVersions()
   end
-  if not packageList then
+  if not self.packageList then
     print('No packages found!')
     return
   end
   
-  local packageInfo = packageList[packageName]
+  local packageInfo = self.packageList[packageName]
   if not packageInfo then
     print('Package ' .. packageInfo .. ' not found in list.')
     return
   end
   
-  if not forceUpdate and packageVersions and packageVersions[packageName] and packageVersions[packageName] < packageInfo.ver then
+  if not forceUpdate and self.packageVersions and self.packageVersions[packageName] and self.packageVersions[packageName] < packageInfo.ver then
     print('Package ' .. packageName .. ' is already at the latest version.')
     return
   end
@@ -142,11 +150,11 @@ function installPackage(packageList, packageName, forceUpdate, packageVersions)
   if packageInfo.deps then
     print('Installing dependencies for ' .. packageName)
     for i, dep in ipairs(packageInfo.deps) do
-      installPackage(packageList, dep, false, packageVersions)
+      self:installPackage(dep, false)
     end
   end
   
-	if not getFile(packageInfo.repoPath,packageInfo.localPath) then
+	if not self:getFile(packageInfo.repoPath,packageInfo.localPath) then
 	  print('Failed to download package ' .. packageName)
 	  return
 	end
@@ -157,7 +165,7 @@ function installPackage(packageList, packageName, forceUpdate, packageVersions)
 	else
 	  print('Successfully installed package ' .. packageName)
   	if packageInfo.ver then
-  	  recordPackageVersion(packageName, packageInfo.ver)
+  	  self:recordPackageVersion(packageName, packageInfo.ver)
   	end
 	end
 	if packageInfo.alias then
@@ -166,28 +174,30 @@ function installPackage(packageList, packageName, forceUpdate, packageVersions)
 	end
 end
 
-function run(args)
+function ppt:run(args)
   if #args == 0 then
-	  printUsage()
+	  self:printUsage()
   elseif args[1] == "update" then
-    updatePackageList(true)
+    self:updatePackageList(true)
   else
-    local packageList = loadPackageList()
+    self:loadPackageList()
     if args[1] == "list" then
-      printPackages(packageList)
+      self:printPackages()
     elseif args[1] == "upgrade" then
-      local packageVersions = loadPackageVersions()
+      self:loadPackageVersions()
       if not args[2] then
-        updateAllPackages(packageList, packageVersions)
+        self:updateAllPackages()
       else
-        installPackage(packageList, args[2], false, packageVersions)
+        self:installPackage(args[2], false)
       end
+      self:savePackageVersions()
 	  elseif args[1] == "get" and args[2] then
-		  installPackage(packageList, args[2],true)
+		  self:installPackage(args[2],true)
+		  self:savePackageVersions()
 	  else
-		  printUsage()
+		  self:printUsage()
 	  end
   end
 end
 
-run(args)
+ppt:run(args)
