@@ -2,17 +2,15 @@
 --
 -- Demo program that mines a block (parses starting position 
 -- and dimensions from program args)
--- 
--- NOTE: Must be run from the directory it lives in.
 
 function require(file)
   shell.run(file)
 end
 
-require("Point")
-require("Agent")
-require("Mine")
-require("String")
+require("/lib/Point")
+require("/lib/Agent")
+require("/lib/Mine")
+require("/lib/String")
 
 args = {...}
 
