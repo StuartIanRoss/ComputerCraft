@@ -2,10 +2,14 @@
 -- Originally by Stuart Ross, 12/01/2013
 
 function require(api)
-  shell.run(api)
+  if fs.exists(api) then
+    shell.run(api)
+  else
+    shell.run('/lib/' .. api)
+  end
 end
 
-require('/lib/libfetch')
+require('libfetch')
 
 local args = {...}
 

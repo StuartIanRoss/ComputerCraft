@@ -1,5 +1,4 @@
-fs.copy('/bin/fetch','/disk/fetch')
-fs.copy('/bin/gitfetch','/disk/gitfetch')
+fs.copy('/lib/libfetch','/disk/libfetch')
 fs.copy('/bin/ppt','/disk/ppt')
 fs.copy('/bin/bootdiskStartup','/disk/startup')
 
