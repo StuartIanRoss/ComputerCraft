@@ -2,11 +2,7 @@
 -- Originally by Stuart Ross, 12/01/2013
 
 function require(api)
-  if fs.exists(api) then
-    shell.run(api)
-  else
-    shell.run('/lib/' .. api)
-  end
+ shell.run('/lib/' .. api)
 end
 
 require('libfetch')
