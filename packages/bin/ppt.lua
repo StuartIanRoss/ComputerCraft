@@ -84,7 +84,7 @@ function ppt:printPackages()
       finalString = finalString .. k .. '\n'
     end
   end
-  textUtils.pagedPrint(finalString,10)
+  textutils.pagedPrint(finalString,10)
   print(#self.packageList .. ' total packages')
 end
 
