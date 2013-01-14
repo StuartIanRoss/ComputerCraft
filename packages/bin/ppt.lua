@@ -76,13 +76,15 @@ function ppt:printPackages()
     return
   end
   
+  local finalString = ""
   for k, v in pairs(self.packageList) do
     if(v.desc) then
-      print(k .. ' - ' .. v.desc)
+      finalString = finalString .. k .. ' - ' .. v.desc . '\n'
     else
-      print(k)
+      finalString = finalString .. k .. '\n'
     end
   end
+  textUtils.pagedPrint(finalString,10)
   print(#self.packageList .. ' total packages')
 end
 
