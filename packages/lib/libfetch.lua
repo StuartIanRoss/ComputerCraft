@@ -13,12 +13,31 @@ _LibFetch.new = function()
   
   -- Generic
   self.fetchFile = function(url, outputPath)
-    if shell.run('/bin/fetch', url, outputPath) then
-    elseif shell.run('fetch', url, outputPath) then
+    src = http.get(url)
+
+    if src == nil then
+      print("Failed to fetch" .. url)
+      return
+    end
+    
+    if not fs.exists(outputPath) then
+      -- makeDir works recursively, so this creates the target file as a dir, and all
+      -- parent dirs. We then just delete the dir that will become the file.
+      fs.makeDir(outputPath)
+      fs.delete(outputPath)
+    end
+
+    f = fs.open(outputPath, "w")
+    if f then
+      f.write(src.readAll())
+      f.close()
     else
-      print('Failed to find fetch, could not download file.')
+      print("Failed to open target file")
+      src.close()
       return false
     end
+
+    src.close()
   
     return true
   end

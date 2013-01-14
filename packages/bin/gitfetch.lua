@@ -14,7 +14,7 @@ end
 
 function main(args)
   if #args ~= 2 then
-    self:printUsage()
+    printUsage()
     return
   end
 
