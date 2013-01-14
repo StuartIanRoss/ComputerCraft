@@ -4,15 +4,15 @@ function require(api)
   shell.run(api)
 end
 
-require('libfetch')
+require('/lib/libfetch')
 
-function gitfetch:printUsage()
+function printUsage()
   print('Usage:')
   print('gitfetch <repo path> <output path> : will fetch at <repo path> in the current repo and branch')
   print(' and save it in <target path>')
 end
 
-function gitfetch:main(args)
+function main(args)
   if #args ~= 2 then
     self:printUsage()
     return
@@ -22,4 +22,4 @@ function gitfetch:main(args)
 end
 
 local args = {...}
-return gitfetch:main(args)
+return main(args)

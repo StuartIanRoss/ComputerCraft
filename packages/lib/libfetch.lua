@@ -54,9 +54,11 @@ _LibFetch.new = function()
   self.fetchViaGit = function(repoPath,localPath)
     self._loadRepoSettings()
     local url = self._buildGitUrl(repoPath)
-    return self._fetchFile( url, args[2] )
+    return self.fetchFile( url, localPath )
   end
   -- End Git
+  
+  return self
 end
 
 libfetch = _LibFetch.new()
