@@ -1,6 +1,6 @@
 {["name"]="fetch",["ver"]=2,["repoPath"]="packages/bin/fetch.lua",["localPath"]="/bin/fetch",["deps"]={[1]="libfetch",},["desc"]="Fetches a file from a url.",}
 {["name"]="gitfetch",["ver"]=2,["repoPath"]="packages/bin/gitfetch.lua",["localPath"]="/bin/gitfetch",["alias"]="gf",["deps"]={[1]="libfetch",},["desc"]="Fetches a file from a github repository.",}
-{["name"]="ppt",["ver"]=1,["repoPath"]="packages/bin/ppt.lua",["localPath"]="/bin/ppt",["alias"]="ppt",["deps"]={[1]="gitfetch",},["desc"]="Allows installing and updating scripts from a remote server.",}
+{["name"]="ppt",["ver"]=2,["repoPath"]="packages/bin/ppt.lua",["localPath"]="/bin/ppt",["alias"]="ppt",["deps"]={[1]="gitfetch",},["desc"]="Allows installing and updating scripts from a remote server.",}
 {["name"]="bootdiskStartup",["ver"]=1,["repoPath"]="packages/bin/bootdiskStartup.lua",["localPath"]="/bin/bootdiskStartup",["desc"]="Copied to a bootdisk by the makeBootDisk package.",}
 {["name"]="makeBootDisk",["ver"]=1,["repoPath"]="packages/bin/makeBootDisk.lua",["localPath"]="/bin/makeBootDisk",["deps"]={[1]="bootdiskStartup",},["desc"]="Creates a bootdisk.",}
 {["name"]="lumberjack",["ver"]=1,["repoPath"]="packages/usr/stuart/lumberjack.lua",["localPath"]="/usr/stuart/lumberjack",["desc"]="A script by stuart that chops trees.",}
