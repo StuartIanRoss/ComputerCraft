@@ -12,6 +12,7 @@ end
 require("Point")
 require("Agent")
 require("Mine")
+require("String")
 
 args = {...}
 

@@ -3,8 +3,6 @@
 -- Describes a "Point" and provides some basic utility methods: 
 -- equality, differencing and string to point parsing.
 
-require("String")
-
 Point = {}
 
 Point.new = function(x,y,z)
