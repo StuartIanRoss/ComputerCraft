@@ -79,7 +79,7 @@ function ppt:printPackages()
   local finalString = ""
   for k, v in pairs(self.packageList) do
     if(v.desc) then
-      finalString = finalString .. k .. ' - ' .. v.desc . '\n'
+      finalString = finalString .. k .. ' - ' .. v.desc .. '\n'
     else
       finalString = finalString .. k .. '\n'
     end
