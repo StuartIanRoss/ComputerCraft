@@ -19,8 +19,6 @@ function gitfetch:loadRepoSettings()
     handle.close()
   end
 end
-  
-end
 
 function gitfetch:fetchFile(url, outputPath)
   if shell.run('/bin/fetch', url, outputPath) then
