@@ -9,3 +9,4 @@
 {["name"]="Agent",["ver"]=1,["repoPath"]="packages/lib/Agent.lua",["localPath"]="/lib/Agent",["desc"]="A class representing the Agent, tracks position/facing, etc.",}
 {["name"]="String",["ver"]=1,["repoPath"]="packages/lib/String.lua",["localPath"]="/lib/String",["desc"]="A class which provides some basic string utility functions.",}
 {["name"]="Mine",["ver"]=1,["repoPath"]="packages/lib/Mine.lua",["localPath"]="/lib/Mine",["desc"]="A class which provides some mining functions.",}
+{["name"]="libfetch",["ver"]=1,["repoPath"]="packages/lib/libfetch.lua",["localPath"]="/lib/libfetch",["desc"]="A class which provides functions to fetch files from the web.",}
