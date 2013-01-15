@@ -7,7 +7,7 @@ function require(file)
   shell.run(file)
 end
 
-require("/lib/Point")
+require("/lib/Vector")
 require("/lib/Agent")
 require("/lib/Mine")
 require("/lib/String")
@@ -24,8 +24,8 @@ function main()
   end
 
   -- Parse start and dimension arguments
-  start = Point.parseString(args[1]);
-  dim = Point.parseString(args[2]);
+  start = Vector.parseString(args[1]);
+  dim = Vector.parseString(args[2]);
 
   -- Mine that block!
   print("main: Mining block")
@@ -33,7 +33,7 @@ function main()
 
   -- Clean up
   print("main: Finished, returning to (0,0,0)")
-  agent.moveTo(Point.new(0,0,0))
+  agent.moveTo(Vector.new(0,0,0))
   agent.turnTo(0)
   
 end
