@@ -4,10 +4,10 @@
 
 Log = {}
 
-Log.Level = { Debug = 0, Info = 1, Warn = 2, Error = 3 }
-Log.LevelString = { Log.Level.Debug = "Debug", Log.Level.Info = "Info", Log.Level.Warn = "Warn", Log.Level.Error = "Error" }
+Log.Level = { Debug = 1, Info = 2, Warn = 3, Error = 4 }
+Log.LevelString = { 1 = "Debug", 2 = "Info", 3 = "Warn", 4 = "Error" }
 
-Log.targets = { { name="Terminal", print=print, level=0 } }
+Log.targets = { { name="Terminal", print=print, level = 1 } }
 
 -- Write debug level message
 Log.debug = function(message) 
@@ -44,7 +44,7 @@ Log._write = function(level, message)
     
     target = Log.targets[i]
     
-    if (level > target.level) then
+    if (level >= target.level) then
     
       target.print(Log.LevelString[level] .. ": \t" .. message)
       
