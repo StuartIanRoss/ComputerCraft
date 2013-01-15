@@ -5,7 +5,7 @@
 Log = {}
 
 Log.Level = { Debug = 1, Info = 2, Warn = 3, Error = 4 }
-Log.LevelString = { 1 = "Debug", 2 = "Info", 3 = "Warn", 4 = "Error" }
+Log.LevelString = { "Debug", "Info", "Warn", "Error" }
 
 Log.targets = { { name="Terminal", write=print, level = 1, init=nil } }
 
@@ -56,7 +56,7 @@ end
 
 Log.FileTarget = {}
 
-Log.FileTarget.new = function("")
+Log.FileTarget.new = function()
 
   local self = {}
   
