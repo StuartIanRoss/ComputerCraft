@@ -4,8 +4,8 @@
 {["name"]="bootdiskStartup",["ver"]=2,["repoPath"]="packages/bin/bootdiskStartup.lua",["localPath"]="/bin/bootdiskStartup",["desc"]="Copied to a bootdisk by the makeBootDisk package.",}
 {["name"]="makeBootDisk",["ver"]=2,["repoPath"]="packages/bin/makeBootDisk.lua",["localPath"]="/bin/makeBootDisk",["deps"]={[1]="bootdiskStartup",},["desc"]="Creates a bootdisk.",}
 {["name"]="lumberjack",["ver"]=1,["repoPath"]="packages/usr/stuart/lumberjack.lua",["localPath"]="/usr/stuart/lumberjack",["desc"]="A script by stuart that chops trees.",}
-{["name"]="MineDemo",["ver"]=1,["repoPath"]="packages/usr/harry/MineDemo.lua",["localPath"]="/usr/harry/MineDemo",["deps"]={[1]="Point",[2]="Agent",[3]="String",[4]="Mine",},["desc"]="A demo script that mines an area.",}
-{["name"]="Point",["ver"]=1,["repoPath"]="packages/lib/Point.lua",["localPath"]="/lib/Point",["desc"]="A class for Point data.",}
+{["name"]="MineDemo",["ver"]=1,["repoPath"]="packages/usr/harry/MineDemo.lua",["localPath"]="/usr/harry/MineDemo",["deps"]={[1]="Vector",[2]="Agent",[3]="String",[4]="Mine",},["desc"]="A demo script that mines an area.",}
+{["name"]="Vector",["ver"]=1,["repoPath"]="packages/lib/Vector.lua",["localPath"]="/lib/Vector",["desc"]="A class for Vector data.",}
 {["name"]="Agent",["ver"]=1,["repoPath"]="packages/lib/Agent.lua",["localPath"]="/lib/Agent",["desc"]="A class representing the Agent, tracks position/facing, etc.",}
 {["name"]="String",["ver"]=1,["repoPath"]="packages/lib/String.lua",["localPath"]="/lib/String",["desc"]="A class which provides some basic string utility functions.",}
 {["name"]="Mine",["ver"]=1,["repoPath"]="packages/lib/Mine.lua",["localPath"]="/lib/Mine",["desc"]="A class which provides some mining functions.",}
