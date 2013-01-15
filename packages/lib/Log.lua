@@ -54,11 +54,20 @@ Log._write = function(level, message)
 
 end
 
+-- Simple file target
 Log.FileTarget = {}
 
-Log.FileTarget.new = function()
+Log.FileTarget.new = function(fileName)
 
-  local self = {}
+  local self = {}  
+  self._fileName = fileName
+  
+  -- Write line to file
+  self.write = function(message) 
+    h = fs.open(self._fileName, "w")
+    h.writeLine(message);
+    h.close()
+  end 
   
   return self
 
