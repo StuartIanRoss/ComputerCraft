@@ -1,33 +1,25 @@
 -- Original version William Pond - 10/1/2013
 -- Modified by Stuart Ross
 
-args = { ... }
-
-if #args < 2 then
-  printf ("Usage: fetch <raw url> <output path>")
-  return
+function require(api)
+  shell.run(api)
 end
 
-url = args[1]
-name = args[2]
+require('/lib/libfetch')
 
-src = http.get(url)
-
-if src == nil then
-  print("Failed to fetch" .. url)
-  return
+function printUsage()
+  print('Usage:')
+  print('fetch <raw url> <output path> : will fetch file at <raw url> and save it as <output path>')
 end
 
-f = fs.open(name, "w")
-if f then
-f.write(src.readAll())
-f.close()
-else
-  print("Failed to open target file")
-  src.close()
-  return false
+function main(args)
+  if #args ~= 2 then
+    printUsage()
+    return
+  end
+
+  return libfetch.fetchFile( args[1], args[2] )
 end
 
-src.close()
-
-print "Done"
+local args = {...}
+return main(args)

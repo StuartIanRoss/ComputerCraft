@@ -1,26 +1,10 @@
 -- Original version by Stuart Ross - 10/1/2013
 
-function loadRepoSettings()
+function require(api)
+  shell.run(api)
 end
 
-function fetchFile(url, outputPath)
-  if shell.run('/bin/fetch', url, outputPath) then
-  elseif shell.run('fetch', url, outputPath) then
-  else
-    print('Failed to find fetch, could not download file.')
-    return false
-  end
-  
-  return true
-end
-
-function buildUrl(repoPath, root, user, repo, branch)
-  root = root or 'https://raw.github.com'
-  user = user or 'StuartIanRoss'
-  repo = repo or 'ComputerCraft'
-  branch = branch or 'master'
-  return root .. '/' .. user .. '/' .. repo .. '/' .. branch .. '/' .. repoPath
-end
+require('/lib/libfetch')
 
 function printUsage()
   print('Usage:')
@@ -33,11 +17,8 @@ function main(args)
     printUsage()
     return
   end
-	
-  local repoPath = args[1]
 
-  local url = buildUrl(repoPath)
-  return fetchFile( url, args[2] )
+  return libfetch.fetchViaGit( args[1], args[2] )
 end
 
 local args = {...}

@@ -1,7 +1,11 @@
 -- Pew Package Tool
 -- Originally by Stuart Ross, 12/01/2013
 
--- Requires gitfetch
+function require(api)
+ shell.run('/lib/' .. api)
+end
+
+require('libfetch')
 
 local args = {...}
 
@@ -18,20 +22,7 @@ end
 
 -- Gets the file at remotePath from the default fetch service, and stores it in localPath
 function ppt:getFile(remotePath,localPath)
-  if not fs.exists(localPath) then
-    -- makeDir works recursively, so this creates the target file as a dir, and all
-    -- parent dirs. We then just delete the dir that will become the file.
-    fs.makeDir(localPath)
-    fs.delete(localPath)
-  end
-  if shell.run('/bin/gitfetch',remotePath,localPath) then
-  elseif shell.run('gitfetch', remotePath,localPath) then
-  else
-    print('Failed to find gitfetch. Could not download file.')
-    return false
-  end
-  
-  return true
+  return libfetch.fetchViaGit( remotePath, localPath )
 end
 
 -- Gets and stores the list of packages available from the server
@@ -76,13 +67,15 @@ function ppt:printPackages()
     return
   end
   
+  local finalString = ""
   for k, v in pairs(self.packageList) do
     if(v.desc) then
-      print(k .. ' - ' .. v.desc)
+      finalString = finalString .. k .. ' - ' .. v.desc .. '\n'
     else
-      print(k)
+      finalString = finalString .. k .. '\n'
     end
   end
+  textutils.pagedPrint(finalString,10)
   print(#self.packageList .. ' total packages')
 end
 
