@@ -15,7 +15,7 @@ Agent.new = function()
   local self = {}
   
   -- Public variables
-  self.pos = Vector.new()
+  self.pos = Point.new()
   self.ori = 0 -- degrees
   
   -- Move forward
