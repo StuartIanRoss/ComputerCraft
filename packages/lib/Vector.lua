@@ -16,7 +16,8 @@ Vector.new = function(x,y,z)
   
   -- Computes the difference between self and another vector
   self.diff = function(vec)
-    return self:sub(vec)
+    out = self:sub(vec)
+    return Vector.new(out.x,out.y,out.z)
   end
   
   -- Checks for equality between self and another vector
