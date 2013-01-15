@@ -7,7 +7,7 @@ Vector = {}
 
 Vector.new = function(x,y,z)
 	
-  local self = vector.new()
+  local self = vector.new(x,y,z)
 
   -- Builds a string representation
   self.toString = function()
