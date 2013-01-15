@@ -10,4 +10,4 @@
 {["name"]="String",["ver"]=1,["repoPath"]="packages/lib/String.lua",["localPath"]="/lib/String",["desc"]="A class which provides some basic string utility functions.",}
 {["name"]="Mine",["ver"]=1,["repoPath"]="packages/lib/Mine.lua",["localPath"]="/lib/Mine",["desc"]="A class which provides some mining functions.",}
 {["name"]="libfetch",["ver"]=1,["repoPath"]="packages/lib/libfetch.lua",["localPath"]="/lib/libfetch",["desc"]="A class which provides functions to fetch files from the web.",}
-{["name"]="Log",["ver"]=1,["repoPath"]="packages/lib/Log.lua",["localPath"]="/lib/Log",["desc"]="A class which provides some mining functions.",}
+{["name"]="Log",["ver"]=2,["repoPath"]="packages/lib/Log.lua",["localPath"]="/lib/Log",["desc"]="A class which provides some mining functions.",}

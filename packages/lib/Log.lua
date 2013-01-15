@@ -39,7 +39,7 @@ end
 -- Write at level
 Log._write = function(level, message)
 
-	for (i=1,table.getn(Log.targets)) do
+	for i=1,table.getn(Log.targets) do
     
     target = Log.targets[i]
     
