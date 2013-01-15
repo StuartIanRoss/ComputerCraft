@@ -7,39 +7,26 @@ Vector = {}
 
 Vector.new = function(x,y,z)
 	
-  local self = {} 
-  self.y = y or 0   
-  self.x = x or 0        
-  self.z = z or 0
+  local self = vector.new()
 
   -- Builds a string representation
   self.toString = function()
-    return string.format("(%d,%d,%d)", self.x, self.y, self.z)
+    return self:tostring()
   end
   
   -- Computes the difference between self and another vector
   self.diff = function(vector)
-  
-    x = self.x - vector.x
-    y = self.y - vector.y
-    z = self.z - vector.z
-    
-    output = Vector.new(x,y,z)
-    
-    return output
-    
+    return self:sub(vector)
   end
   
   -- Checks for equality between self and another vector
-  self.equal = function(vector)
-  
+  self.equal = function(vector)  
     return 
       (
         self.x == vector.x and
         self.y == vector.y and
         self.z == vector.z
-      )
-    
+      )    
   end
 	
   return self

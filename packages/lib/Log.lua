@@ -7,7 +7,7 @@ Log = {}
 Log.Level = { Debug = 1, Info = 2, Warn = 3, Error = 4 }
 Log.LevelString = { 1 = "Debug", 2 = "Info", 3 = "Warn", 4 = "Error" }
 
-Log.targets = { { name="Terminal", print=print, level = 1 } }
+Log.targets = { { name="Terminal", write=print, level = 1, init=nil } }
 
 -- Write debug level message
 Log.debug = function(message) 
@@ -46,10 +46,20 @@ Log._write = function(level, message)
     
     if (level >= target.level) then
     
-      target.print(Log.LevelString[level] .. ": \t" .. message)
+      target.write(Log.LevelString[level] .. ": \t" .. message)
       
     end
     
 	end
+
+end
+
+Log.FileTarget = {}
+
+Log.FileTarget.new = function("")
+
+  local self = {}
+  
+  return self
 
 end
