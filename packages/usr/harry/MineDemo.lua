@@ -19,7 +19,7 @@ function main()
 
   if not (table.getn(args) == 2) then
     print("Usage: MineBlock <Start> <Dimensions>")
-	print("(e.g. \"MineBlock 0,0,0 3,3,1\"")
+    print("(e.g. \"MineBlock 0,0,0 3,3,1\"")
     error()
   end
 

@@ -51,9 +51,12 @@ Log.addTarget = function(name,writeFunction,level)
   table.insert(Log.targets, { name=name, write=writeFunction, level = level } )
 end
 
+--------------------
+
+
 -- FileTarget
 --
--- Simple file target
+-- Simple file target. Demonstrates how to add a new target to the logger
 
 Log.FileTarget = {}
 

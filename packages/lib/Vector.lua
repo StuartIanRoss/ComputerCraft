@@ -15,17 +15,17 @@ Vector.new = function(x,y,z)
   end
   
   -- Computes the difference between self and another vector
-  self.diff = function(vector)
-    return self:sub(vector)
+  self.diff = function(vec)
+    return self:sub(vec)
   end
   
   -- Checks for equality between self and another vector
-  self.equal = function(vector)  
+  self.equal = function(vec)  
     return 
       (
-        self.x == vector.x and
-        self.y == vector.y and
-        self.z == vector.z
+        self.x == vec.x and
+        self.y == vec.y and
+        self.z == vec.z
       )    
   end
 	

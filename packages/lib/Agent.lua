@@ -151,31 +151,31 @@ Agent.new = function()
   end
 
   -- Move by x, y, z
-  self.move = function(vector,dig)
+  self.move = function(vec,dig)
     
     -- handle X
-    if vector.x > 0 then
+    if vec.x > 0 then
       self.turnTo(90)
-      self.forward(math.abs(vector.x),dig)
-    elseif vector.x < 0 then
+      self.forward(math.abs(vec.x),dig)
+    elseif vec.x < 0 then
       self.turnTo(270)
-      self.forward(math.abs(vector.x),dig)
+      self.forward(math.abs(vec.x),dig)
     end
     
     -- handle Y
-    if vector.y > 0 then
+    if vec.y > 0 then
       self.turnTo(0)
-      self.forward(math.abs(vector.y),dig)
-    elseif vector.y < 0 then
+      self.forward(math.abs(vec.y),dig)
+    elseif vec.y < 0 then
       self.turnTo(180)
-      self.forward(math.abs(vector.y),dig)
+      self.forward(math.abs(vec.y),dig)
     end
       
     -- handle Z
-    if vector.z > 0 then
-      self.up(math.abs(vector.z),dig)
-    elseif vector.z < 0 then
-      self.down(math.abs(vector.z),dig)    
+    if vec.z > 0 then
+      self.up(math.abs(vec.z),dig)
+    elseif vec.z < 0 then
+      self.down(math.abs(vec.z),dig)    
     end
     
   end
@@ -183,8 +183,8 @@ Agent.new = function()
   -- Move to point
   self.moveTo = function(point,dig)
 
-    vector = point.diff(self.pos);    
-    agent.move(vector,dig)
+    vec = point.diff(self.pos);    
+    agent.move(vec,dig)
 
   end
   
