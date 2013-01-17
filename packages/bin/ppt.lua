@@ -209,7 +209,7 @@ function ppt:installPackage(packageName, forceUpdate, dontUpdateDeps)
 	end
 	if packageInfo.alias then
 	  if type(packageInfo.localPath) == "table" then
-	    shell.setAlias(packageInfo.alias, packageInfo.localPath[1]
+	    shell.setAlias(packageInfo.alias, packageInfo.localPath[1])
 	  else
   	  shell.setAlias(packageInfo.alias, packageInfo.localPath)
   	end
