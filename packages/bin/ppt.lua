@@ -163,15 +163,45 @@ function ppt:installPackage(packageName, forceUpdate, dontUpdateDeps)
     end
   end
   
-	if not self:getFile(packageInfo.repoPath,packageInfo.localPath) then
-	  print('Failed to download package ' .. packageName)
-	  return
+  local success = true
+  if type(packageInfo.repoPath) == "table" or type(packageInfo.localPath) == "table" then
+    if type(packageInfo.repoPath) ~= "table" then
+      print('Local path for package ' .. packageName .. ' is a table, but repo path is not.')
+      return
+    end
+    if type(packageInfo.localPath) ~= "table" then
+      print('Repo path for package ' .. packageName .. ' is a table, but local path is not.')
+      return
+    end
+    if #packageInfo.repoPath ~= #packageInfo.localPath then
+      print('The repo path and local path tables for ' .. packageName .. ' are different lengths.'
+      return
+    end
+    
+    for i, v in ipairs(packageInfo.repoPath) do
+    	if not self:getFile(v,packageInfo.localPath[i]) then
+	      print('Failed to download file ' .. i .. ' of package ' .. packageName)
+	      return
+    	end
+	
+	    if not fs.exists(packageInfo.localPath[i]) then
+	      print('Failed to install file ' .. i .. ' of package ' .. packageName)
+  	    return
+    	end
+    end
+  else
+  	if not self:getFile(packageInfo.repoPath,packageInfo.localPath) then
+	    print('Failed to download package ' .. packageName)
+	    return
+  	end
+	
+	  if not fs.exists(packageInfo.localPath) then
+	    print('Failed to install package ' .. packageName)
+  	  return
+  	end
 	end
 	
-	if not fs.exists(packageInfo.localPath) then
-	  print('Failed to install package ' .. packageName)
-	  return
-	else
+	if success then
 	  print('Successfully installed package ' .. packageName)
   	if packageInfo.ver then
   	  self:recordPackageVersion(packageName, packageInfo.ver)
