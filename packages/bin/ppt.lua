@@ -174,7 +174,7 @@ function ppt:installPackage(packageName, forceUpdate, dontUpdateDeps)
       return
     end
     if #packageInfo.repoPath ~= #packageInfo.localPath then
-      print('The repo path and local path tables for ' .. packageName .. ' are different lengths.'
+      print('The repo path and local path tables for ' .. packageName .. ' are different lengths.')
       return
     end
     
