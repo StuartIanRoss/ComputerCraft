@@ -193,6 +193,7 @@ function ppt:run(args)
     if args[1] == "list" then
       self:printPackages()
     elseif args[1] == "upgrade" then
+      self:updatePackageList(true)
       self:loadPackageVersions()
       if not args[2] then
         self:updateAllPackages()
