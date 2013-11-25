@@ -24,12 +24,12 @@ function main()
 	
 	local dest = args[2]
 	
-	a = Agent(myPos)
+	a = Agent.new(myPos)
 	
 	if (dest == "home") then
-		a.move(B1)
+		agent.moveTo(B1)
 	else
-		a.move(B2)
+		agent.moveTo(B2)
 	end
 	
 end
