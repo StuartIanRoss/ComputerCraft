@@ -9,10 +9,10 @@ require("/lib/String")
 
 args = {...}
 
-B1 = Vector.parseString("-45,72,-131")
-B2 = Vector.parseString("-50,72,-131")
-
 function main()
+	
+	local B1 = Vector.parseString("-45,72,-131")
+	local B2 = Vector.parseString("-50,72,-131")
 	
 	if #args == 0 then
 		print("Location and destinations not specified")
@@ -27,9 +27,9 @@ function main()
 	a = Agent.new(myPos)
 	
 	if (dest == "home") then
-		agent.moveTo(B1)
+		a.moveTo(B1)
 	else
-		agent.moveTo(B2)
+		a.moveTo(B2)
 	end
 	
 end
