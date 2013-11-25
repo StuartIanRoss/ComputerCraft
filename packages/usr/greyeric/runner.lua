@@ -24,13 +24,12 @@ function main()
 	
 	local dest = args[2]
 	
-	local B1Diff = Vector(B1.x - myPos.x, B1.y - myPos.y, B1.z - myPos.z)
-	local B2Diff = Vector(B2.x - myPos.x, B2.y - myPos.y, B2.z - myPos.z)
+	a = Agent(myPos)
 	
 	if (dest == "home") then
-		Agent.move(B1Diff)
+		a.move(B1)
 	else
-		Agent.move(B2Diff)
+		a.move(B2)
 	end
 	
 end

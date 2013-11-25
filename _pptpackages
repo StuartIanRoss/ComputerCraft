@@ -11,4 +11,4 @@
 {["name"]="Mine",["ver"]=1,["repoPath"]="packages/lib/Mine.lua",["localPath"]="/lib/Mine",["desc"]="A class which provides some mining functions.",}
 {["name"]="libfetch",["ver"]=1,["repoPath"]="packages/lib/libfetch.lua",["localPath"]="/lib/libfetch",["desc"]="A class which provides functions to fetch files from the web.",}
 {["name"]="Log",["ver"]=4,["repoPath"]="packages/lib/Log.lua",["localPath"]="/lib/Log",["desc"]="A class which provides basic logging functionality.",}
-{["name"]="Runner",["ver"]=2,["repoPath"]="packages/usr/greyeric/runner.lua",["localPath"]="/usr/greyeric/RunnerDemo",["deps"]={[1]="Vector",[2]="Agent",[3]="String",},["desc"]="A demo script for running supplies between locations.",}
+{["name"]="Runner",["ver"]=3,["repoPath"]="packages/usr/greyeric/runner.lua",["localPath"]="/usr/greyeric/RunnerDemo",["deps"]={[1]="Vector",[2]="Agent",[3]="String",},["desc"]="A demo script for running supplies between locations.",}
