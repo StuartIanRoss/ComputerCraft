@@ -4,8 +4,8 @@
 -- action 0x00
 function returnHome()
 	print("Return Home")
-	while not stack.empty() do
-		cmd = stack.pop()
+	while not stackEmpty() do
+		cmd = stackPop()
 		actions[cmd]["returnFunc"]()
 	end
 end
@@ -33,8 +33,9 @@ actions = {
 }
 
 function performAction(cmd)
-	actions[cmd][func]()
+	actions[cmd]["func"]()
 	if cmd > 0 then -- don't push returnHome command
 		stackPush(cmd)
+		print "Stack Push"
 	end
 end

@@ -1,12 +1,20 @@
 
 _s = {}
 
+function stackCount()
+	count = 0
+	for k,v in pairs(_s) do
+		count = count + 1
+	end
+	return count
+end
+
 function stackEmpty()
-	return #_s == 0
+	return stackCount() == 0
 end
 
 function stackPush(i)
-	_s[#_s] = i
+	_s[stackCount()] = i
 end
 
 function stackPop()
@@ -15,8 +23,8 @@ function stackPop()
 		return nil
 	end
 	
-	i = _s[#_s-1]
-	_s[_s-1] = nil
+	i = _s[stackCount()-1]
+	_s[stackCount()-1] = nil
 	
 	return i
 	
