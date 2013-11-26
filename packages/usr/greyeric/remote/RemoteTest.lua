@@ -30,7 +30,6 @@ end
 
 function postResults(url,data)
 	http.post(url,data)
-	http.close()
 end
 
 function main(args)
