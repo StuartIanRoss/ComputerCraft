@@ -52,4 +52,4 @@ function main(args)
 	
 end
 
-main()
+main(args)
