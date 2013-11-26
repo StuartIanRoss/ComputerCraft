@@ -55,7 +55,7 @@ function main(args)
 			return
 		end
 		
-		performAction(0xFF) -- wait 1 second between plans
+		performAction(0xFE) -- wait 1 second between plans
 		
 	end
 	

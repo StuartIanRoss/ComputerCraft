@@ -76,10 +76,16 @@ end
 
 
 
--- action 0xFF
+-- action 0xFE
 function noop()
 	print("noop")
 	os.sleep(1)
+end
+
+-- action 0xFF
+function forceQuit()
+	print("exit")
+	error("Forced quit")
 end
 
 actions = {
@@ -95,7 +101,8 @@ actions = {
 	[0x09]={["func"]=digUp,["returnFunc"]=nil},
 	[0x0A]={["func"]=digDown,["returnFunc"]=nil},
 	
-	[0xFF]={["func"]=noop,["returnFunc"]=nil},
+	[0xFE]={["func"]=noop,["returnFunc"]=nil},
+	[0xFF]={["func"]=forceQuit,["returnFunc"]=nil},
 }
 
 function performAction(cmd)
