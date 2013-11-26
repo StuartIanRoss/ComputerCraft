@@ -13,9 +13,6 @@ Agent = {}
 Agent.new = function(position)
 
   local self = {}
-  
-  position = position or Vector()
-  
   -- Public variables
   self.pos = position
   self.ori = 0 -- degrees
