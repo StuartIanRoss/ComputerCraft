@@ -6,10 +6,9 @@ function returnHome()
 	print("Return Home")
 	while not stackEmpty() do
 		cmd = stackPop()
-		if cmd == nil then
-			continue
+		if cmd ~= nil then
+			actions[cmd]["returnFunc"]()
 		end
-		actions[cmd]["returnFunc"]()
 	end
 end
 
