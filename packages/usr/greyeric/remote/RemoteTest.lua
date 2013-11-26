@@ -8,7 +8,7 @@ require('/usr/greyeric/remote/Actions')
 require('/lib/libfetch')
 
 function fetchPlan(url)
-	return { 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0x00 }
+	return libfetch.fetchContents(url)
 end
 
 function runPlan(plan)
@@ -24,18 +24,30 @@ args = {...}
 
 function main(args)
 	
-	local myPlan = fetchPlan("abc")
-	local ok,val = pcall(runPlan,myPlan)
+	if #args == 0 then
+		print("Usage: RemoteTest url")
+		return
+	end
 	
-	if ok ~= true then
+	while true do
+	
+		local myPlan = fetchPlan("abc")
 		
-		print("")
-		print("Error:")
-		print(val)
-		print("")
-		
-		performAction(0x00) -- returnHome
-		
+		if myPlan ~= nil then
+			
+			local ok,val = pcall(runPlan,myPlan)
+			
+			if ok ~= true then
+				
+				print("")
+				print("Error:")
+				print(val)
+				print("")
+				
+				performAction(0x00) -- returnHome
+				
+			end
+		end
 	end
 	
 end
