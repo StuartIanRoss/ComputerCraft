@@ -20,8 +20,6 @@ function runPlan(plan)
 	end
 end
 
-args = {...}
-
 function main(args)
 	
 	if #args == 0 then
@@ -31,11 +29,13 @@ function main(args)
 	
 	while true do
 		
-		local remoteCallOk,myPlan = pcall(fetchPlan,args[1])
+		local remoteCallOk,myPlanRaw = pcall(fetchPlan,args[1])
 		
 		if remoteCallOk then
 			
-			if myPlan ~= nil then
+			local unserializeOk,myPlan = pcall(textutils.unserialize,myPlanRaw)
+			
+			if myPlanRaw ~= nil and unserializeOk then
 				
 				local executeOk,executeVal = pcall(runPlan,myPlan)
 				
@@ -58,4 +58,5 @@ function main(args)
 	
 end
 
+args = {...}
 main(args)
