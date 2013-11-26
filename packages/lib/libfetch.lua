@@ -13,12 +13,6 @@ _LibFetch.new = function()
   
   -- Generic
   self.fetchFile = function(url, outputPath)
-    src = http.get(url)
-
-    if src == nil then
-      print("Failed to fetch" .. url)
-      return
-    end
     
     if not fs.exists(outputPath) then
       -- makeDir works recursively, so this creates the target file as a dir, and all
@@ -29,11 +23,14 @@ _LibFetch.new = function()
 
     f = fs.open(outputPath, "w")
     if f then
-      f.write(src.readAll())
+	  local contents = self.fetchContents(url)
+	  if contents == nil then
+	    return false
+	  end
+      f.write(contents)
       f.close()
     else
       print("Failed to open target file")
-      src.close()
       return false
     end
 
@@ -42,7 +39,22 @@ _LibFetch.new = function()
     return true
   end
   -- End generic
+  
+  self.fetchContents = function(url)
+	local src = http.get(url)
 
+    if src == nil then
+      print("Failed to fetch" .. url)
+      return nil
+    end
+    
+    local contents = src.readAll()
+    src.close()
+    
+    return contents
+    
+  end
+  
   -- Git
   self._loadRepoSettings = function()
     local handle = fs.open('/etc/_gitfetch','r')

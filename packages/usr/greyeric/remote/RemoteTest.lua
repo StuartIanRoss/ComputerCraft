@@ -5,8 +5,13 @@ end
 
 require('/usr/greyeric/remote/Stack')
 require('/usr/greyeric/remote/Actions')
+require('/lib/libfetch')
 
-function run(plan)
+function fetchPlan(url)
+	return { 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0x00 }
+end
+
+function runPlan(plan)
 	pos = 1
 
 	while plan[pos] ~= nil do
@@ -19,12 +24,18 @@ args = {...}
 
 function main(args)
 	
-	local myPlan = { 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0x00 }
-	local ok,val = pcall(run,myPlan)
+	local myPlan = fetchPlan("abc")
+	local ok,val = pcall(runPlan,myPlan)
 	
 	if ok ~= true then
-		print("Error: "..val)
+		
+		print("")
+		print("Error:")
+		print(val)
+		print("")
+		
 		performAction(0x00) -- returnHome
+		
 	end
 	
 end
