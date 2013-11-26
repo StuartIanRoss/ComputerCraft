@@ -49,15 +49,15 @@ function main(args)
 				
 				if executeOk ~= true then
 					
-					print("")
-					print("Error:")
-					print(val)
-					print("")
-					
 					if not performAction(0x00) then -- returnHome
 						print("Unable to return home! :(")
 						return
 					end
+					
+					print("")
+					print("Error:")
+					print(val)
+					print("")
 					
 				end
 				
