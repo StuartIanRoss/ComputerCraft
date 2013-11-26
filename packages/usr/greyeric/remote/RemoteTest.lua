@@ -31,21 +31,24 @@ function main(args)
 	
 	while true do
 	
-		local myPlan = fetchPlan("abc")
+		local remoteCallOk,myPlan = pcall(fetchPlan,args[1])
 		
-		if myPlan ~= nil then
+		if remoteCallOk then
 			
-			local ok,val = pcall(runPlan,myPlan)
-			
-			if ok ~= true then
+			if myPlan ~= nil then
 				
-				print("")
-				print("Error:")
-				print(val)
-				print("")
+				local executeOk,executeVal = pcall(runPlan,myPlan)
 				
-				performAction(0x00) -- returnHome
-				
+				if executeOk ~= true then
+					
+					print("")
+					print("Error:")
+					print(val)
+					print("")
+					
+					performAction(0x00) -- returnHome
+					
+				end
 			end
 		end
 	end
