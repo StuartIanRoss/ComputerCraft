@@ -84,8 +84,7 @@ end
 
 -- action 0xFF
 function forceQuit()
-	print("exit")
-	error("Forced quit")
+	print("quit")
 end
 
 actions = {

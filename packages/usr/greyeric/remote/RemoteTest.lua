@@ -12,12 +12,19 @@ function fetchPlan(url)
 end
 
 function runPlan(plan)
+	
 	pos = 1
-
+	
 	while plan[pos] ~= nil do
-		performAction(plan[pos])
+		if plan[pos] == 0xFF then -- catch quit command
+			return true
+		else
+			performAction(plan[pos])
+		end
 		pos = pos + 1
 	end
+	
+	return false
 end
 
 function main(args)
@@ -49,6 +56,12 @@ function main(args)
 					performAction(0x00) -- returnHome
 					
 				end
+				
+				if executeVal then
+					print("Finished")
+					return
+				end
+				
 			end
 		else
 			print("Unable to resolve url")
