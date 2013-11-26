@@ -54,6 +54,9 @@ function main(args)
 			print("Unable to resolve url")
 			return
 		end
+		
+		performAction(0xFF) -- wait 1 second between plans
+		
 	end
 	
 end
