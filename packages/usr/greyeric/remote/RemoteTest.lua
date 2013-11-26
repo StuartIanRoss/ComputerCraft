@@ -50,6 +50,9 @@ function main(args)
 					
 				end
 			end
+		else
+			print("Unable to resolve url")
+			return
 		end
 	end
 	
