@@ -33,8 +33,6 @@ _LibFetch.new = function()
       print("Failed to open target file")
       return false
     end
-
-    src.close()
   
     return true
   end

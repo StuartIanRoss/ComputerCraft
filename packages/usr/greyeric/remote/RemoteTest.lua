@@ -30,7 +30,7 @@ function main(args)
 	end
 	
 	while true do
-	
+		
 		local remoteCallOk,myPlan = pcall(fetchPlan,args[1])
 		
 		if remoteCallOk then
