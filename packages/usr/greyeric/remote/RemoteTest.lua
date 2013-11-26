@@ -18,14 +18,14 @@ function runPlan(plan)
 	
 	while plan[pos] ~= nil do
 		if plan[pos] == 0xFF then -- catch quit command
-			return true
+			return true,pos
 		else
 			performAction(plan[pos])
 		end
 		pos = pos + 1
 	end
 	
-	return false
+	return false,pos
 end
 
 function postResults(url,data)
@@ -51,7 +51,7 @@ function main(args)
 			
 			if myPlanRaw ~= nil and unserializeOk then
 				
-				local executeOk,executeVal = pcall(runPlan,myPlan)
+				local executeOk,executeVal,executeCount = pcall(runPlan,myPlan)
 				
 				if executeOk ~= true then
 					
@@ -65,9 +65,9 @@ function main(args)
 					print(val)
 					print("")
 					
-					postResults(url,"actionComplete=false")
+					postResults(url,"actionComplete=false&executeCount="..executeCount)
 				else
-					postResults(url,"actionComplete=true")
+					postResults(url,"actionComplete=true&executeCount="..executeCount)
 				end
 				
 				if executeVal then
