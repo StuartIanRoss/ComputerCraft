@@ -40,9 +40,11 @@ function main(args)
 		return
 	end
 	
+	local url = args[1]
+	
 	while true do
 		
-		local remoteCallOk,myPlanRaw = pcall(fetchPlan,args[1])
+		local remoteCallOk,myPlanRaw = pcall(fetchPlan,url)
 		
 		if remoteCallOk then
 			
