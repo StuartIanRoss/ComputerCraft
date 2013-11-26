@@ -6,7 +6,7 @@ end
 require('/usr/greyeric/remote/Stack')
 require('/usr/greyeric/remote/Actions')
 require('/lib/libfetch')
-require('/lib/Vector')
+--require('/lib/Vector')
 
 function fetchPlan(url)
 	return libfetch.fetchContents(url)
