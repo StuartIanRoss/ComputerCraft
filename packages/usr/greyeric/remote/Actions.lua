@@ -7,15 +7,21 @@ function returnHome()
 	while not stackEmpty() do
 		cmd = stackPop()
 		if cmd ~= nil and actions[cmd]["returnFunc"] ~= nil then
-			actions[cmd]["returnFunc"]()
+			local ok = pcall(actions[cmd]["returnFunc"])
+			if ok ~= true then
+				return false
+			end
 		end
 	end
+	return true
 end
 
 -- action 0x01
 function forward()
 	print("forward")
-	turtle.forward()
+	if not turtle.forward() then
+		error("Couldn't go forward")
+	end
 end
 
 -- action 0x02
@@ -29,19 +35,25 @@ end
 -- action 0x03
 function backward()
 	print("backward")
-	turtle.back()
+	if not turtle.back() then
+		error("Couldn't go back")
+	end
 end
 
 -- action 0x04
 function up()
 	print("up")
-	turtle.up()
+	if not turtle.up() then
+		error("Couldn't go up")
+	end
 end
 
 -- action 0x05
 function down()
 	print("down")
-	turtle.down()
+	if not turtle.down() then
+		error("Couldn't go down")
+	end
 end
 
 -- action 0x06
@@ -105,8 +117,9 @@ actions = {
 }
 
 function performAction(cmd)
-	actions[cmd]["func"]()
+	local ret = actions[cmd]["func"]()
 	if cmd > 0 then -- don't push returnHome command
 		stackPush(cmd)
 	end
+	return ret
 end

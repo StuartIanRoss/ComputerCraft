@@ -6,6 +6,7 @@ end
 require('/usr/greyeric/remote/Stack')
 require('/usr/greyeric/remote/Actions')
 require('/lib/libfetch')
+require('/lib/Vector')
 
 function fetchPlan(url)
 	return libfetch.fetchContents(url)
@@ -53,7 +54,10 @@ function main(args)
 					print(val)
 					print("")
 					
-					performAction(0x00) -- returnHome
+					if not performAction(0x00) then -- returnHome
+						print("Unable to return home! :(")
+						return
+					end
 					
 				end
 				
