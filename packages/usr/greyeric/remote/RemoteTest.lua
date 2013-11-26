@@ -64,9 +64,9 @@ function main(args)
 					print(val)
 					print("")
 					
-					postResults("actionComplete=false")
+					postResults(url,"actionComplete=false")
 				else
-					postResults("actionComplete=true")
+					postResults(url,"actionComplete=true")
 				end
 				
 				if executeVal then
