@@ -6,10 +6,24 @@ end
 require('/usr/greyeric/remote/Stack')
 require('/usr/greyeric/remote/Actions')
 
-plan = { 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0x00 }
-pos = 0
+function run(plan)
+	pos = 1
 
-while plan[pos] ~= nil do
-	performAction(plan[pos])
-	pos = pos + 1
+	while plan[pos] ~= nil do
+		performAction(plan[pos])
+		pos = pos + 1
+	end
 end
+
+args = {...}
+
+function main(args)
+	
+	local myPlan = { 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0x00 }
+	local ok,val = pcall(run,myPlan)
+	
+	print("ok: "..ok)
+	
+end
+
+main()
