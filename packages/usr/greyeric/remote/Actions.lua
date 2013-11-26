@@ -74,6 +74,14 @@ function digDown()
 	turtle.digDown()
 end
 
+
+
+-- action 0xFF
+function noop()
+	print("noop")
+	os.sleep(1)
+end
+
 actions = {
 	[0x00]={["func"]=returnHome},
 	[0x01]={["func"]=forward,["returnFunc"]=backward},
@@ -86,6 +94,8 @@ actions = {
 	[0x08]={["func"]=dig,["returnFunc"]=nil},
 	[0x09]={["func"]=digUp,["returnFunc"]=nil},
 	[0x0A]={["func"]=digDown,["returnFunc"]=nil},
+	
+	[0xFF]={["func"]=noop,["returnFunc"]=nil},
 }
 
 function performAction(cmd)
