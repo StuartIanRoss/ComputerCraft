@@ -22,7 +22,10 @@ function main(args)
 	local myPlan = { 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0x00 }
 	local ok,val = pcall(run,myPlan)
 	
-	print("ok: "..ok)
+	if ok ~= true then
+		print("Error: "..val)
+		performAction(0x00) -- returnHome
+	end
 	
 end
 
