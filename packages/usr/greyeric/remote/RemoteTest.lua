@@ -3,8 +3,8 @@ function require(lib)
 	shell.run(lib)
 end
 
-require('/usr/greyeric/Stack')
-require('/usr/greyeric/Actions')
+require('/usr/greyeric/remote/Stack')
+require('/usr/greyeric/remote/Actions')
 
 performAction(0x01)
 performAction(0x02)

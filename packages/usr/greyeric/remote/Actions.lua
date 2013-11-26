@@ -6,7 +6,7 @@ function returnHome()
 	print("Return Home")
 	while not stack.empty() do
 		cmd = stack.pop()
-		actions[cmd][returnFunc]()
+		actions[cmd]["returnFunc"]()
 	end
 end
 
@@ -21,15 +21,15 @@ function forwardDig()
 end
 
 -- action 0x03
-functon backward()
+function backward()
 	print("backward")
 end
 
 actions = {
-	0x00={func=returnHome},
-	0x01={func=forward,returnFunc=backward},
-	0x02={func=forwardDig,returnFunc=backward},
-	0x03={func=backward,returnFunc=forward},
+	[0x00]={["func"]=returnHome},
+	[0x01]={["func"]=forward,["returnFunc"]=backward},
+	[0x02]={["func"]=forwardDig,["returnFunc"]=backward},
+	[0x03]={["func"]=backward,["returnFunc"]=forward},
 }
 
 function performAction(cmd)
