@@ -28,6 +28,11 @@ function runPlan(plan)
 	return false
 end
 
+function postResults(url,data)
+	http.post(url,data)
+	http.close()
+end
+
 function main(args)
 	
 	if #args == 0 then
@@ -59,6 +64,9 @@ function main(args)
 					print(val)
 					print("")
 					
+					postResults("actionComplete=false")
+				else
+					postResults("actionComplete=true")
 				end
 				
 				if executeVal then
