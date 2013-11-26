@@ -6,9 +6,10 @@ end
 require('/usr/greyeric/remote/Stack')
 require('/usr/greyeric/remote/Actions')
 
-performAction(0x01)
-performAction(0x04)
-performAction(0xFF)
-performAction(0xFF)
-performAction(0xFF)
-performAction(0x00)
+plan = { 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0x00 }
+pos = 0
+
+while plan[pos] ~= nil do
+	performAction(plan[pos])
+	pos = pos + 1
+end
