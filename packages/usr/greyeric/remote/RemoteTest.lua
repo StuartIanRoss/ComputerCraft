@@ -53,6 +53,10 @@ function main(args)
 				
 				local executeOk,executeVal,executeCount = pcall(runPlan,myPlan)
 				
+				if executeCount == nil then
+					executeCount = 0
+				end
+				
 				if executeOk ~= true then
 					
 					if not performAction(0x00) then -- returnHome
