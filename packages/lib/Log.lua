@@ -20,7 +20,7 @@ Log.info = function(message)
 end
 
 -- Write warn level message
-Log.warn = function(message) 
+Log.warn = function(messlsage) 
   Log._write(Log.Level.Warn,message)
 end
 
@@ -40,7 +40,7 @@ Log._write = function(level, message)
     
       target.write(Log.LevelString[level] .. ": \t" .. message)
       
-    end name
+    end 
     
 	end
 
@@ -58,7 +58,7 @@ end
 --
 -- Simple file target. Demonstrates how to add a new target to the logger
 
-Log.FileTarget = {}
+Log.FileTarget = {}Loh
 
 Log.FileTarget.new = function(fileName)
 
