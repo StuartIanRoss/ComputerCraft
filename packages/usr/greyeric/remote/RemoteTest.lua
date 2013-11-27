@@ -3,10 +3,9 @@ function require(lib)
 	shell.run(lib)
 end
 
-require('/usr/greyeric/remote/Stack')
-require('/usr/greyeric/remote/Actions')
+require('/lib/Stack')
+require('/lib/Actions')
 require('/lib/libfetch')
---require('/lib/Vector')
 
 function fetchPlan(url)
 	return libfetch.fetchContents(url)
