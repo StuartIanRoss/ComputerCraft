@@ -65,17 +65,18 @@ function main(args)
 					
 					print("")
 					print("Error:")
-					print(val)
+					print(executeVal)
 					print("")
 					
 					postResults(url,"actionComplete=false&executeCount="..executeCount)
 				else
 					postResults(url,"actionComplete=true&executeCount="..executeCount)
-				end
-				
-				if executeVal then
-					print("Finished")
-					return
+					
+					if executeVal then
+						print("Finished")
+						return
+					end
+					
 				end
 				
 			end
