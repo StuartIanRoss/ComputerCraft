@@ -40,7 +40,7 @@ Log._write = function(level, message)
     
       target.write(Log.LevelString[level] .. ": \t" .. message)
       
-    end name
+    end
     
 	end
 
