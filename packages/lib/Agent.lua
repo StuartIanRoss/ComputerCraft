@@ -10,11 +10,12 @@
 
 Agent = {}
 
-Agent.new = function(position)
+Agent.new = function()
 
   local self = {}
+  
   -- Public variables
-  self.pos = position
+  self.pos = Vector.new()
   self.ori = 0 -- degrees
   
   -- Move forward
