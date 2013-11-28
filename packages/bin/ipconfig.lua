@@ -15,7 +15,7 @@ else
   configs = {}
 end
 
-bool enterGateway = false
+local enterGateway = false
 if gateway ~= nil then
   print("Current gateway is " .. gateway[0] .. "." .. gateway[1] .. "." .. gateway[2] .. "." .. gateway[3])
 else
@@ -36,7 +36,7 @@ if enterGateway then
   gateway[3] = value
 end
 
-bool enterIp = false
+local enterIp = false
 if ip ~= nil then
   print("Current ip is " .. ip[0] .. "." .. ip[1] .. "." .. ip[2] .. "." .. ip[3])
 else
