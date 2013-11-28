@@ -224,9 +224,11 @@ _PewNet.new = function()
   
    -- Setup all connections
   local configs = self.loadIpConfig()
-    
-  for k,v in pairs(configs) do
-    self._private.createConnection(v.ip, v.gateway, v.side)
+  
+  if configs ~= nil then
+    for k,v in pairs(configs) do
+      self._private.createConnection(v.ip, v.gateway, v.side)
+    end
   end
   
   return self
