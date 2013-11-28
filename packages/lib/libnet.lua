@@ -118,7 +118,7 @@ _PewNet.new = function()
   
   self.broadcast = function(data)
     if self._private.openConnections[0] then
-      self._private.openConnections[0].broadcast[0]
+      self._private.openConnections[0].broadcast(data)
     else
       print("No open connection found.")
     end
@@ -181,12 +181,6 @@ _PewNet.new = function()
     end
     print("pewnet is now running")
     bRunning = true
-    
-    local configs = self.loadIpConfig()
-    
-    for k,v in pairs(configs) do
-      self.createConnection(v.ip, v.gateway)
-    end
   
     while bRunning do
       local senderId, message, distance = rednet.receive()
@@ -219,6 +213,13 @@ _PewNet.new = function()
         print("Ignored IP packet as we are not connection " .. ipPacket.destinationIp)
       end
     end
+  end
+  
+   -- Setup all connections
+  local configs = self.loadIpConfig()
+    
+  for k,v in pairs(configs) do
+    self.createConnection(v.ip, v.gateway)
   end
   
   return self
