@@ -8,11 +8,17 @@ local PACKET_TYPE_UDP = 0
 
 _Connection = {}
 
-_Connection.new = function(inputIp, gatewayIp)
+_Connection.new = function(inputIp, gatewayIp, connSide)
+
+  if not peripheral.isPresent(connSide) or peripheral.getType(connSide) ~= "modem" then
+    print("Modem not found on side " .. connSide)
+    return nil
+  end
+  rednet.open(connSide)
   local self = {}
   
   -- Default to subnet 0, ip 255 (broadcast), gateway 0
-  self._private = {version = 0, ip = inputIp, gateway = gatewayIp, openPorts = {}, isRouter = false}
+  self._private = {version = 0, side = connSide, ip = inputIp, gateway = gatewayIp, openPorts = {}, isRouter = false}
   
   self.setIp = function(ip)
     self._private.ip = ip
@@ -32,6 +38,7 @@ _Connection.new = function(inputIp, gatewayIp)
     broadcastIp[1] = self._private.ip[1]
     broadcastIp[2] = self._private.ip[2]
     broadcastIp[3] = 255
+    return broadcastIp
   end
   
   self.setIsRouter = function(set)
@@ -57,7 +64,7 @@ _Connection.new = function(inputIp, gatewayIp)
     -- Broadcast
     if destinationIp[3] == 255 then
       print("Broadcasting packet over rednet")
-      rednet.broadcast(ipPacket)
+      rednet.broadcast(textutils.serialize(ipPacket))
     else
       print("Not a broadcast packet, so currently ignored")
     end
@@ -75,7 +82,7 @@ _Connection.new = function(inputIp, gatewayIp)
   end
   
   self.broadcast = function(data)
-    self._private.sentUDPPacket(self.getBroadcastIp(),0,data)
+    self._private.sendUDPPacket(self.getBroadcastIp(),0,data)
   end
   
   self.openPort = function(portNum)
@@ -219,7 +226,7 @@ _PewNet.new = function()
   local configs = self.loadIpConfig()
     
   for k,v in pairs(configs) do
-    self.createConnection(v.ip, v.gateway)
+    self._private.createConnection(v.ip, v.gateway, v.side)
   end
   
   return self

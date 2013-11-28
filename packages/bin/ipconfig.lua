@@ -8,9 +8,11 @@ local configs = libnet.loadIpConfig()
 
 local gateway = nil
 local ip = nil
+local side = nil
 if configs ~= nil then 
   gateway = configs[0].gateway
   ip = configs[0].ip
+  side = configs[0].side
 else
   configs = {}
   configs[0] = {}
@@ -56,6 +58,19 @@ if enterIp then
   ip[2] = value
   value = io.read()
   ip[3] = value
+end
+
+local enterSide = false
+if side ~= nil then
+  print("Connection side is " .. side)
+else
+  print("No side currently set.")
+  enterSide = true
+end
+
+if enterSide then
+  print("Enter the modem side")
+  side = io.read()
 end
 
 
