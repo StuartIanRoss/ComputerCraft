@@ -209,44 +209,49 @@ _PewNet.new = function()
 -- Runs libnet, should be run on a coroutine/parallel (based off rednet run method)
 -- This parallel function captures all the incoming packets and pushes them to the correct connection
   self.run = function()
-    if bRunning then
+    if self._private.bRunning then
       print( "pewnet is already running" )
       return
     end
     print("pewnet is now running")
-    bRunning = true
+    self._private.bRunning = true
   
-    while bRunning do
+    while self._private.bRunning do
       local senderId, message, distance = rednet.receive()
       
-      local ipPacket = textutils.unserialize(message)
+      if self._private.openConnections and #self._private.openConnections > 0 then
       
-      local destConnection = nil
+        local ipPacket = textutils.unserialize(message)
       
-      for k,v in ipairs(self._private.openConnections) do
-        if v and (self.doIpsMatch(v.getIp(),ipPacket.destinationIp) or self.doIpsMatch(v.getBroadcastIp(),ipPacket.destinationIp)) then
-          destConnection = v
+        local destConnection = nil
+      
+        for k,v in ipairs(self._private.openConnections) do
+          if v and (self.doIpsMatch(v.getIp(),ipPacket.destinationIp) or self.doIpsMatch(v.getBroadcastIp(),ipPacket.destinationIp)) then
+            destConnection = v
+          end
         end
-      end
       
-      if destConnection ~= nil then
-        -- This is an ip packet meant for us
+        if destConnection ~= nil then
+          -- This is an ip packet meant for us
         
-        if packet.type == PACKET_TYPE_UDP then
-          local udpPacket = ipPacket.payload
+          if packet.type == PACKET_TYPE_UDP then
+            local udpPacket = ipPacket.payload
         
-          if destConnection.isPortOpen(udpPacket.destinationPort) then
-            -- This is a UDP packet for an open port, store it so the app can use it
-            print("Queing message")
-            os.queueEvent( "pewnet_message", ipPacket )
+            if destConnection.isPortOpen(udpPacket.destinationPort) then
+              -- This is a UDP packet for an open port, store it so the app can use it
+              print("Queing message")
+              os.queueEvent( "pewnet_message", ipPacket )
+            else
+              print("Ignored UDP packet as port " .. udpPacket.destinationPort .. " is not open for connection " .. textutils.serialize(ipPacket.destinationIp))
+            end
           else
-            print("Ignored UDP packet as port " .. udpPacket.destinationPort .. " is not open for connection " .. textutils.serialize(ipPacket.destinationIp))
+            print("Ignored IP packet as it was of an unknown type")
           end
         else
-          print("Ignored IP packet as it was of an unknown type")
+          print("Ignored IP packet as we are not connection " .. textutils.serialize(ipPacket.destinationIp))
         end
       else
-        print("Ignored IP packet as we are not connection " .. textutils.serialize(ipPacket.destinationIp))
+        print("Ignore IP packet as we have no current connections")
       end
     end
   end
