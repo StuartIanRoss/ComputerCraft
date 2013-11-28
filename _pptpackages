@@ -11,3 +11,7 @@
 {["name"]="Mine",["ver"]=1,["repoPath"]="packages/lib/Mine.lua",["localPath"]="/lib/Mine",["desc"]="A class which provides some mining functions.",}
 {["name"]="libfetch",["ver"]=1,["repoPath"]="packages/lib/libfetch.lua",["localPath"]="/lib/libfetch",["desc"]="A class which provides functions to fetch files from the web.",}
 {["name"]="Log",["ver"]=4,["repoPath"]="packages/lib/Log.lua",["localPath"]="/lib/Log",["desc"]="A class which provides basic logging functionality.",}
+{["name"]="libnet",["ver"]=1,["repoPath"]="packages/lib/libnet.lua",["localPath"]="/lib/libnet",["desc"]="A class which provides basic networking functionality.",}
+{["name"]="printserver",["ver"]=1,["repoPath"]="packages/usr/stuart/server.lua",["localPath"]="/usr/stuart/printserver",["desc"]="A server which prints packets it receives to screen and printer.",}
+{["name"]="client",["ver"]=1,["repoPath"]="packages/usr/stuart/client.lua",["localPath"]="/usr/stuart/client",["desc"]="A simple network client.",}
+{["name"]="ipconfig",["ver"]=1,["repoPath"]="packages/bin/ipconfig.lua",["localPath"]="/usr/bin/ipconfig",["desc"]="Setup ip gateway",}
