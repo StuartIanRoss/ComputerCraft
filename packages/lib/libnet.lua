@@ -110,8 +110,8 @@ _PewNet.new = function()
   self._private = {}
   self._private.openConnections = {}
 
-  self._private.createConnection = function(ip)
-    local connection = _Connection.new(ip)
+  self._private.createConnection = function(ip, gateway, side)
+    local connection = _Connection.new(ip, gateway, side)
     self._private.openConnections[#self._private.openConnections] = connection
   end
   
