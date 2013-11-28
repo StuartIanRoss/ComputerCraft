@@ -47,5 +47,5 @@ parallel.waitForAny(
 			run()
 		end,
 		function()
-			pewnet.run()
+			libnet.run()
 		end )

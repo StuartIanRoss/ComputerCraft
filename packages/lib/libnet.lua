@@ -236,13 +236,13 @@ _PewNet.new = function()
             -- This is a UDP packet for an open port, store it so the app can use it
             os.queueEvent( "pewnet_message", ipPacket )
           else
-            print("Ignored UDP packet as port " .. udpPacket.destinationPort .. " is not open for connection " .. ipPacket.destinationIp)
+            print("Ignored UDP packet as port " .. udpPacket.destinationPort .. " is not open for connection " .. textutils.serialize(ipPacket.destinationIp))
           end
         else
           print("Ignored IP packet as it was of an unknown type")
         end
       else
-        print("Ignored IP packet as we are not connection " .. ipPacket.destinationIp)
+        print("Ignored IP packet as we are not connection " .. textutils.serialize(ipPacket.destinationIp))
       end
     end
   end
