@@ -17,7 +17,7 @@ function run()
   local connection = libnet.getDefaultConnection()
   while connection do
     print("Waiting for message")
-    local senderId, message, distance = connection.receive(1)
+    local message = connection.receive(1)
     if message then
 --      printer.write(message)
 --      local maxx, maxy = printer.getPageSize()
@@ -29,7 +29,7 @@ function run()
 --        printer.setCursorPos(1,oldy+1)
 --      end
       
-      monitor.write(message)
+      monitor.write(textutils.unserialize(message))
       local oldx, oldy = monitor.getCursorPos()
       monitor.setCursorPos(1,oldy+1)
       local maxx, maxy = monitor.getPageSize()
