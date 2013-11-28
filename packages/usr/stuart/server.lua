@@ -14,7 +14,7 @@ function run()
   monitor.setCursorPos(1,1)
 
   print("Opening connection")
-  local connection = pewnet.openConnection("right")
+  local connection = libnet.getDefaultConnection()
   while connection do
     print("Waiting for message")
     local senderId, message, distance = connection.receive(1)

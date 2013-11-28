@@ -115,6 +115,10 @@ _PewNet.new = function()
     self._private.openConnections[#self._private.openConnections] = connection
   end
   
+  self.getDefaultConnection = function()
+    return self._private.openConnections[0]
+  end
+  
   self.sendPacket = function(destinationIp, destinationPort, data)
     if self._private.openConnections[0] then
       self._private.openConnections[0].sendPacket(destinationIp, destinationPort, data)
