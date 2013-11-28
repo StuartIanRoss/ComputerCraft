@@ -28,6 +28,7 @@ function runPlan(plan)
 end
 
 function postResults(url,data)
+	print("Posting: "..data)
 	http.post(url,data)
 end
 
