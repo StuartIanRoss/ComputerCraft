@@ -68,9 +68,9 @@ function main(args)
 					print(executeVal)
 					print("")
 					
-					postResults(url,"actionComplete=false&executeCount="..executeCount)
+					postResults(url,"planComplete=false&executeCount="..executeCount)
 				else
-					postResults(url,"actionComplete=true&executeCount="..executeCount)
+					postResults(url,"planComplete=true&executeCount="..executeCount)
 					
 					if executeVal then
 						print("Finished")
