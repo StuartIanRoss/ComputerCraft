@@ -82,7 +82,7 @@ _Connection.new = function(inputIp, gatewayIp, connSide)
   end
   
   self.broadcast = function(data)
-    self._private.sendUDPPacket(self.getBroadcastIp(),0,data)
+    self._private.sendUDPPacket(self.getBroadcastIp(),65535,data)
   end
   
   self.receive = function(timeout)
@@ -116,6 +116,9 @@ _Connection.new = function(inputIp, gatewayIp, connSide)
   self.isPortOpen = function(portNum)
     return self._private.openPorts[portNum] ~= nil
   end
+  
+  -- Open a port to receive broadcast data
+  self.openPort(65535)
   
   return self
 end
@@ -234,6 +237,7 @@ _PewNet.new = function()
         
           if destConnection.isPortOpen(udpPacket.destinationPort) then
             -- This is a UDP packet for an open port, store it so the app can use it
+            print("Queing message")
             os.queueEvent( "pewnet_message", ipPacket )
           else
             print("Ignored UDP packet as port " .. udpPacket.destinationPort .. " is not open for connection " .. textutils.serialize(ipPacket.destinationIp))
