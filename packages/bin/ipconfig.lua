@@ -76,4 +76,5 @@ end
 
 configs[0].gateway = gateway
 configs[0].ip = ip
+configs[0].side = side
 libnet.saveIpConfig(configs)
