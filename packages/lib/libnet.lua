@@ -8,11 +8,11 @@ local PACKET_TYPE_UDP = 0
 
 _Connection = {}
 
-_Connection.new = function(inputIp)
+_Connection.new = function(inputIp, gatewayIp)
   local self = {}
   
   -- Default to subnet 0, ip 255 (broadcast), gateway 0
-  self._private = {version = 0, ip = inputIp, gateway = {[0]=192,[1]=168,[2]=0,[3]=0,}, openPorts = {}, isRouter = false}
+  self._private = {version = 0, ip = inputIp, gateway = gatewayIp, openPorts = {}, isRouter = false}
   
   self.setIp = function(ip)
     self._private.ip = ip
@@ -26,12 +26,16 @@ _Connection.new = function(inputIp)
     self._private.gateway = gateway
   end
   
-  self.getSide = function()
-    return self._private.side
+  self.getBroadcastIp = function()
+    local broadcastIp = {}
+    broadcastIp[0] = self._private.ip[0]
+    broadcastIp[1] = self._private.ip[1]
+    broadcastIp[2] = self._private.ip[2]
+    broadcastIp[3] = 255
   end
   
   self.setIsRouter = function(set)
-    return self_private.isRouter = set
+    self._private.isRouter = set
   end
   
   self.isRouter = function()
@@ -49,6 +53,14 @@ _Connection.new = function(inputIp)
     ipPacket.data = textutils.serialize(data)
 
     -- Need to find routing info to destinationIp to resolve mac address
+    
+    -- Broadcast
+    if destinationIp[3] == 255 then
+      print("Broadcasting packet over rednet")
+      rednet.broadcast(ipPacket)
+    else
+      print("Not a broadcast packet, so currently ignored")
+    end
   end
   
   self._private.sendUDPPacket = function(destinationIp, destinationPort, data)
@@ -62,6 +74,10 @@ _Connection.new = function(inputIp)
     self._private.sendUDPPacket(destinationIp, destinationPort, data)
   end
   
+  self.broadcast = function(data)
+    self._private.sentUDPPacket(self.getBroadcastIp(),0,data)
+  end
+  
   self.openPort = function(portNum)
     self._private.openPorts[portNum] = true
   end
@@ -71,7 +87,7 @@ _Connection.new = function(inputIp)
   end
   
   self.isPortOpen = function(portNum)
-    self._private.openPorts[portNum] ~= nil
+    return self._private.openPorts[portNum] ~= nil
   end
   
   return self
@@ -89,7 +105,27 @@ _PewNet.new = function()
 
   self._private.createConnection = function(ip)
     local connection = _Connection.new(ip)
-    self._private.openConnections[ip] = connection
+    self._private.openConnections[#self._private.openConnections] = connection
+  end
+  
+  self.sendPacket = function(destinationIp, destinationPort, data)
+    if self._private.openConnections[0] then
+      self._private.openConnections[0].sendPacket(destinationIp, destinationPort, data)
+    else
+      print("No open connection found.")
+    end
+  end
+  
+  self.broadcast = function(data)
+    if self._private.openConnections[0] then
+      self._private.openConnections[0].broadcast[0]
+    else
+      print("No open connection found.")
+    end
+  end
+  
+  self.doIpsMatch = function(check1, check2)
+    return (check1[0] == check2[0]) and (check1[1] == check2[1]) and (check1[2] == check2[2]) and (check1[3] == check2[3])
   end
   
   self.closeConnection = function(connection)
@@ -97,8 +133,12 @@ _PewNet.new = function()
       print("No valid connection object passed in")
       return
     end
-
-    self._private.openConnections[connection.getIp()] = nil
+    
+    for k,v in ipairs(self._private.openConnections) do
+      if v and v.isThisIp(connection.getIp()) then
+        self._private.openConnections[k] = nil
+      end
+    end
   end
   
   -- Returns table with ipconfig data
@@ -125,7 +165,7 @@ _PewNet.new = function()
   self.saveIpConfig = function(config)
     local handle = fs.open('/etc/_ipconfig','w')
     if handle then
-      for k,v in pairs(config) d
+      for k,v in pairs(config) do
         handle.writeLine( textutils.serialize( v ) )
       end
       handle.close()
@@ -145,7 +185,7 @@ _PewNet.new = function()
     local configs = self.loadIpConfig()
     
     for k,v in pairs(configs) do
-      self.createConnection(v.ip)
+      self.createConnection(v.ip, v.gateway)
     end
   
     while bRunning do
@@ -153,13 +193,21 @@ _PewNet.new = function()
       
       local ipPacket = textutils.unserialize(message)
       
-      if self._private.openConnections[ipPacket.destinationIp] ~= nil then
+      local destConnection = nil
+      
+      for k,v in ipairs(self._private.openConnections) do
+        if v and (self.doIpsMatch(v.getIp(),ipPacket.destinationIp) or self.doIpsMatch(v.getBroadcastIp(),ipPacket.destinationIp)) then
+          destConnection = v
+        end
+      end
+      
+      if destConnection ~= nil then
         -- This is an ip packet meant for us
         
         if packet.type == PACKET_TYPE_UDP then
           local udpPacket = ipPacket.payload
         
-          if self._private.openConnections[ipPacket.destinationIp].isPortOpen(udpPacket.destinationPort) then
+          if destConnection.isPortOpen(udpPacket.destinationPort) then
             -- This is a UDP packet for an open port, store it so the app can use it
           else
             print("Ignored UDP packet as port " .. udpPacket.destinationPort .. " is not open for connection " .. ipPacket.destinationIp)

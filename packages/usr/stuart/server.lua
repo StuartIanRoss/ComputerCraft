@@ -6,8 +6,8 @@ require('libnet')
 
 function run()
 -- Connect printer
-  local printer = peripheral.wrap("left")
-  printer.newPage()
+--  local printer = peripheral.wrap("left")
+--  printer.newPage()
 -- Connect monitor
   local monitor = peripheral.wrap("top")
   monitor.clear()
@@ -19,20 +19,20 @@ function run()
     print("Waiting for message")
     local senderId, message, distance = connection.receive(1)
     if message then
-      printer.write(message)
-      local maxx, maxy = printer.getPageSize()
-      local oldx, oldy = printer.getCursorPos()
-      if (oldy + 1) > maxy then
-        printer.endPage()
-        printer.newPage()
-      else
-        printer.setCursorPos(1,oldy+1)
-      end
+--      printer.write(message)
+--      local maxx, maxy = printer.getPageSize()
+--      local oldx, oldy = printer.getCursorPos()
+--      if (oldy + 1) > maxy then
+--        printer.endPage()
+--        printer.newPage()
+--      else
+--        printer.setCursorPos(1,oldy+1)
+--      end
       
       monitor.write(message)
-      oldx, oldy = monitor.getCursorPos()
+      local oldx, oldy = monitor.getCursorPos()
       monitor.setCursorPos(1,oldy+1)
-      maxx, maxy = monitor.getPageSize()
+      local maxx, maxy = monitor.getPageSize()
       if (oldy + 1) > maxy then
         monitor.scroll(1)
       end

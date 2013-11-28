@@ -13,6 +13,7 @@ if configs ~= nil then
   ip = configs[0].ip
 else
   configs = {}
+  configs[0] = {}
 end
 
 local enterGateway = false
@@ -41,11 +42,12 @@ if ip ~= nil then
   print("Current ip is " .. ip[0] .. "." .. ip[1] .. "." .. ip[2] .. "." .. ip[3])
 else
   print("No ip currently set.")
+  ip = {}
   enterIp = true
 end
 
 if enterIp then
-  print("Enter gateway in 4 parts")
+  print("Enter ip in 4 parts")
   local value = io.read()
   ip[0] = value
   value = io.read()

@@ -5,8 +5,7 @@ end
 require('libnet')
 
 function run()
-  connection = pewnet.openConnection("right")
-  if connection then connection.broadcast("hello") end
+  libnet.broadcast("hello")
 end
 
 run()
