@@ -27,7 +27,7 @@ Mine.layer = function(origin,x,y)
   end
   
   print("layer: Finished")
-              
+  
 end
 
 -- Mine a block given an origin and dimensions
@@ -59,12 +59,12 @@ Mine.spiralDown = function(origin,width,depth)
   -- Dig down till we reach Z
   while agent.pos.z == origin.z - depth do
   
-	for i=1,width-1 do
-		agent.down()
-		agent.forward()
-	end
-	
-	agent.turnRight()
+    for i=1,width-1 do
+      agent.down()
+      agent.forward()
+    end
+    
+    agent.turnRight()
   
   end
   
@@ -74,12 +74,12 @@ Mine.spiralDown = function(origin,width,depth)
   -- Return
   while agent.pos.z == origin.z do
   
-	for i=1,width-1 do
-		agent.up()
-		agent.forward()
-	end
-	
-	agent.turnLeft()
+    for i=1,width-1 do
+      agent.up()
+      agent.forward()
+    end
+    
+    agent.turnLeft()
   
   end
 
