@@ -17,17 +17,23 @@ function runPlan(plan)
 	
 	while plan[pos] ~= nil do
 		if plan[pos] == 0xFF then -- catch quit command
-			return true,pos
+			return true,pos,true
 		else
-			performAction(plan[pos])
+			local ok = pcall(performAction,plan[pos])
+			
+			if ok ~= true then
+				return false,pos,false
+			end
+			
 		end
 		pos = pos + 1
 	end
 	
-	return false,pos
+	return false,pos,true
 end
 
 function postResults(url,data)
+	print("Posting: "..data)
 	http.post(url,data)
 end
 
@@ -50,13 +56,13 @@ function main(args)
 			
 			if myPlanRaw ~= nil and unserializeOk then
 				
-				local executeOk,executeVal,executeCount = pcall(runPlan,myPlan)
+				local executeOk,executeVal,executeCount,executePlanComplete = pcall(runPlan,myPlan)
 				
 				if executeCount == nil then
 					executeCount = 0
 				end
 				
-				if executeOk ~= true then
+				if executePlanComplete == false then
 					
 					if not performAction(0x00) then -- returnHome
 						print("Unable to return home! :(")
@@ -65,17 +71,18 @@ function main(args)
 					
 					print("")
 					print("Error:")
-					print(val)
+					print(executeVal)
 					print("")
 					
-					postResults(url,"actionComplete=false&executeCount="..executeCount)
+					postResults(url,"planComplete=false&executeCount="..executeCount)
 				else
-					postResults(url,"actionComplete=true&executeCount="..executeCount)
-				end
-				
-				if executeVal then
-					print("Finished")
-					return
+					postResults(url,"planComplete=true&executeCount="..executeCount)
+					
+					if executeVal then
+						print("Finished")
+						return
+					end
+					
 				end
 				
 			end
